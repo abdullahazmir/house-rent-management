@@ -1,10 +1,12 @@
 import type { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
-import { getUsersCollection, getOwnersCollection } from '../db/collections';
+import { getUsersCollection, getOwnersCollection, getTenantsCollection } from '../db/collections';
 import { hashPassword, comparePassword } from '../utils/password';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../utils/jwt';
 import { ConflictError, UnauthorizedError, NotFoundError } from '../utils/errors';
+import { hashInviteToken } from '../utils/inviteToken';
 import type { RegisterInput, LoginInput } from '../validators/auth.validators';
+import type { AcceptInviteInput } from '../validators/tenant.validators';
 import { env } from '../config/env';
 
 const REFRESH_COOKIE = 'refreshToken';
@@ -146,6 +148,60 @@ export async function refresh(req: Request, res: Response): Promise<void> {
 export function logout(_req: Request, res: Response): void {
   res.clearCookie(REFRESH_COOKIE, { path: '/api/v1/auth' });
   res.status(204).send();
+}
+
+export async function acceptInvite(
+  req: Request<unknown, unknown, AcceptInviteInput>,
+  res: Response,
+): Promise<void> {
+  const { token, password } = req.body;
+  const tokenHash = hashInviteToken(token);
+
+  const tenants = getTenantsCollection();
+  const tenant = await tenants.findOne({ inviteTokenHash: tokenHash });
+
+  if (!tenant || !tenant.inviteTokenExpiresAt || tenant.inviteTokenExpiresAt < new Date()) {
+    throw new UnauthorizedError('Invite link is invalid or has expired');
+  }
+
+  if (tenant.userId) {
+    throw new ConflictError('This invite has already been accepted');
+  }
+
+  const users = getUsersCollection();
+  const passwordHash = await hashPassword(password);
+  const now = new Date();
+  const userId = new ObjectId();
+
+  await users.insertOne({
+    _id: userId,
+    email: tenant.email,
+    passwordHash,
+    role: 'renter',
+    ownerId: tenant.ownerId,
+    isActive: true,
+    lastLoginAt: now,
+    createdAt: now,
+    updatedAt: now,
+  });
+
+  await tenants.updateOne(
+    { _id: tenant._id },
+    {
+      $set: { userId, status: 'active', activatedAt: now, updatedAt: now },
+      $unset: { inviteTokenHash: '', inviteTokenExpiresAt: '' },
+    },
+  );
+
+  const ownerId = tenant.ownerId.toHexString();
+  const accessToken = signAccessToken({ sub: userId.toHexString(), role: 'renter', ownerId });
+  const refreshToken = signRefreshToken({ sub: userId.toHexString() });
+
+  setRefreshCookie(res, refreshToken);
+  res.status(201).json({
+    accessToken,
+    user: { id: userId.toHexString(), email: tenant.email, role: 'renter', ownerId },
+  });
 }
 
 export async function me(req: Request, res: Response): Promise<void> {

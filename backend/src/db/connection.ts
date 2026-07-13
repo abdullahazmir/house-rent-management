@@ -13,7 +13,6 @@ export async function connectDB(): Promise<Db> {
 
   await createIndexes(db);
 
-  // eslint-disable-next-line no-console
   console.log(`Connected to MongoDB Atlas database "${env.MONGODB_DB_NAME}"`);
   return db;
 }
@@ -42,5 +41,21 @@ async function createIndexes(database: Db): Promise<void> {
   await database.collection('owners').createIndexes([
     { key: { stripeCustomerId: 1 }, unique: true, sparse: true, name: 'uniq_stripe_customer' },
     { key: { stripeConnectAccountId: 1 }, unique: true, sparse: true, name: 'uniq_stripe_connect' },
+  ]);
+
+  await database.collection('properties').createIndexes([{ key: { ownerId: 1, createdAt: -1 }, name: 'by_owner' }]);
+
+  await database
+    .collection('units')
+    .createIndexes([{ key: { ownerId: 1, propertyId: 1 }, name: 'by_owner_property' }]);
+
+  await database.collection('leases').createIndexes([
+    { key: { ownerId: 1, unitId: 1 }, name: 'by_owner_unit' },
+    { key: { ownerId: 1, tenantIds: 1 }, name: 'by_owner_tenant' },
+  ]);
+
+  await database.collection('tenants').createIndexes([
+    { key: { ownerId: 1, createdAt: -1 }, name: 'by_owner' },
+    { key: { ownerId: 1, email: 1 }, unique: true, name: 'uniq_owner_email' },
   ]);
 }
