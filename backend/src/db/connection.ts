@@ -38,9 +38,22 @@ async function createIndexes(database: Db): Promise<void> {
     { key: { ownerId: 1 }, name: 'by_owner' },
   ]);
 
+  // stripeCustomerId/stripeConnectAccountId are stored as explicit `null` until Stripe is
+  // wired up (Phase 2/3), so a `sparse` index won't help — sparse only skips *missing* fields,
+  // not `null` values. A partial index scoped to actual strings is what we need instead.
   await database.collection('owners').createIndexes([
-    { key: { stripeCustomerId: 1 }, unique: true, sparse: true, name: 'uniq_stripe_customer' },
-    { key: { stripeConnectAccountId: 1 }, unique: true, sparse: true, name: 'uniq_stripe_connect' },
+    {
+      key: { stripeCustomerId: 1 },
+      unique: true,
+      partialFilterExpression: { stripeCustomerId: { $type: 'string' } },
+      name: 'uniq_stripe_customer',
+    },
+    {
+      key: { stripeConnectAccountId: 1 },
+      unique: true,
+      partialFilterExpression: { stripeConnectAccountId: { $type: 'string' } },
+      name: 'uniq_stripe_connect',
+    },
   ]);
 
   await database.collection('properties').createIndexes([{ key: { ownerId: 1, createdAt: -1 }, name: 'by_owner' }]);

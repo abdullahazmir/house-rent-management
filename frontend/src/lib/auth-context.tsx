@@ -17,6 +17,7 @@ interface AuthContextValue {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<AuthUser>;
   register: (input: RegisterInput) => Promise<AuthUser>;
+  acceptInvite: (token: string, password: string) => Promise<AuthUser>;
   logout: () => Promise<void>;
 }
 
@@ -62,6 +63,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return res.data.user;
   }, []);
 
+  const acceptInvite = useCallback(async (token: string, password: string): Promise<AuthUser> => {
+    const res = await api.post<{ accessToken: string; user: AuthUser }>('/auth/accept-invite', {
+      token,
+      password,
+    });
+    setAccessToken(res.data.accessToken);
+    setUser(res.data.user);
+    return res.data.user;
+  }, []);
+
   const logout = useCallback(async (): Promise<void> => {
     await api.post('/auth/logout');
     setAccessToken(null);
@@ -69,7 +80,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, register, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, isLoading, login, register, acceptInvite, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 
