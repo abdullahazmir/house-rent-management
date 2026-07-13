@@ -1,0 +1,14 @@
+{
+  "name": "house-rent-management",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Monorepo for the House Rent Management SaaS: Next.js frontend + Express/MongoDB backend.",
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
