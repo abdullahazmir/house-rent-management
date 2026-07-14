@@ -60,7 +60,7 @@ function AcceptInviteForm() {
 
 export default function AcceptInvitePage() {
   return (
-    <main className="flex flex-1 items-center justify-center p-8">
+    <main className="flex flex-1 items-center justify-center p-4 sm:p-6 lg:p-8">
       <Suspense fallback={<p className="text-sm text-gray-500">Loading…</p>}>
         <AcceptInviteForm />
       </Suspense>

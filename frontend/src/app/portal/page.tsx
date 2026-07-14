@@ -24,7 +24,7 @@ export default function PortalHomePage() {
 
   if (lease === undefined) {
     return (
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8">
         <p className="text-sm text-gray-500">Loading…</p>
       </main>
     );
@@ -32,14 +32,14 @@ export default function PortalHomePage() {
 
   if (!lease) {
     return (
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8">
         <p className="text-sm text-gray-500">You don&apos;t have an active lease yet.</p>
       </main>
     );
   }
 
   return (
-    <main className="flex-1 p-8">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <h1 className="mb-6 text-xl font-semibold">My lease</h1>
       <div className="max-w-md rounded-md border border-gray-200 p-6">
         <p className="text-lg font-medium">{lease.property?.name}</p>

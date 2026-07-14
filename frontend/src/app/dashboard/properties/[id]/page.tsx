@@ -61,20 +61,20 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
 
   if (!property || units === null) {
     return (
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8">
         <p className="text-sm text-gray-500">Loading…</p>
       </main>
     );
   }
 
   return (
-    <main className="flex-1 p-8">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <h1 className="text-xl font-semibold">{property.name}</h1>
       <p className="mb-6 text-sm text-gray-500">
         {property.addressLine1}, {property.city}, {property.state} {property.zip}
       </p>
 
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-lg font-medium">Units</h2>
         <Button onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'Add unit'}</Button>
       </div>
@@ -82,14 +82,14 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
       {showForm ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mb-6 grid max-w-xl grid-cols-2 gap-4 rounded-md border border-gray-200 p-4"
+          className="mb-6 grid max-w-xl grid-cols-1 gap-4 rounded-md border border-gray-200 p-4 sm:grid-cols-2"
         >
           <Input label="Unit number" {...register('unitNumber')} error={errors.unitNumber?.message} />
           <Input label="Monthly rent ($)" type="number" step="0.01" {...register('marketRent')} error={errors.marketRent?.message} />
           <Input label="Bedrooms" type="number" {...register('bedrooms')} error={errors.bedrooms?.message} />
           <Input label="Bathrooms" type="number" step="0.5" {...register('bathrooms')} error={errors.bathrooms?.message} />
-          {error ? <p className="col-span-2 text-sm text-red-600">{error}</p> : null}
-          <div className="col-span-2">
+          {error ? <p className="text-sm text-red-600 sm:col-span-2">{error}</p> : null}
+          <div className="sm:col-span-2">
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Saving…' : 'Save unit'}
             </Button>
@@ -102,7 +102,7 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
       ) : (
         <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
           {units.map((unit) => (
-            <li key={unit._id} className="flex items-center justify-between p-4">
+            <li key={unit._id} className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="font-medium">Unit {unit.unitNumber}</p>
                 <p className="text-sm text-gray-500">
@@ -110,7 +110,7 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
                 </p>
               </div>
               <span
-                className={`rounded-full px-2 py-1 text-xs font-medium ${
+                className={`self-start rounded-full px-2 py-1 text-xs font-medium sm:self-auto ${
                   unit.status === 'vacant'
                     ? 'bg-green-100 text-green-800'
                     : unit.status === 'occupied'

@@ -60,8 +60,8 @@ export default function PortalMaintenancePage() {
   };
 
   return (
-    <main className="flex-1 p-8">
-      <div className="mb-6 flex items-center justify-between">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl font-semibold">Maintenance requests</h1>
         <Button onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'New request'}</Button>
       </div>
@@ -69,12 +69,12 @@ export default function PortalMaintenancePage() {
       {showForm ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mb-8 grid max-w-xl grid-cols-2 gap-4 rounded-md border border-gray-200 p-4"
+          className="mb-8 grid max-w-xl grid-cols-1 gap-4 rounded-md border border-gray-200 p-4 sm:grid-cols-2"
         >
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <Input label="Title" {...register('title')} error={errors.title?.message} />
           </div>
-          <div className="col-span-2 flex flex-col gap-1">
+          <div className="flex flex-col gap-1 sm:col-span-2">
             <label className="text-sm font-medium text-gray-700">Description</label>
             <textarea {...register('description')} rows={3} className="rounded-md border border-gray-300 px-3 py-2 text-sm" />
             {errors.description ? <p className="text-xs text-red-600">{errors.description.message}</p> : null}
@@ -88,8 +88,8 @@ export default function PortalMaintenancePage() {
               <option value="urgent">Urgent</option>
             </select>
           </div>
-          {error ? <p className="col-span-2 text-sm text-red-600">{error}</p> : null}
-          <div className="col-span-2">
+          {error ? <p className="text-sm text-red-600 sm:col-span-2">{error}</p> : null}
+          <div className="sm:col-span-2">
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Submitting…' : 'Submit request'}
             </Button>
@@ -104,12 +104,12 @@ export default function PortalMaintenancePage() {
       ) : (
         <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
           {requests.map((r) => (
-            <li key={r._id} className="flex items-center justify-between p-4">
+            <li key={r._id} className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="font-medium">{r.title}</p>
                 <p className="text-sm text-gray-500">{r.description}</p>
               </div>
-              <span className={`rounded-full px-2 py-1 text-xs font-medium ${STATUS_STYLES[r.status]}`}>
+              <span className={`self-start rounded-full px-2 py-1 text-xs font-medium sm:self-auto ${STATUS_STYLES[r.status]}`}>
                 {r.status.replace('_', ' ')}
               </span>
             </li>

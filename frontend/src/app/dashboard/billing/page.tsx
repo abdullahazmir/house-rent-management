@@ -69,14 +69,14 @@ export default function BillingPage() {
 
   if (!subscription) {
     return (
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8">
         <p className="text-sm text-gray-500">Loading…</p>
       </main>
     );
   }
 
   return (
-    <main className="flex-1 p-8">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <h1 className="mb-2 text-xl font-semibold">Billing</h1>
       <p className="mb-6 text-sm text-gray-600">
         Current status: <span className="font-medium">{subscription.status.replace('_', ' ')}</span>
@@ -91,7 +91,7 @@ export default function BillingPage() {
         </Button>
       ) : null}
 
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {plans.map((plan) => {
           const isCurrent = subscription.plan?._id === plan._id;
           return (

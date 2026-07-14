@@ -31,7 +31,7 @@ export default function AdminOwnersPage() {
   };
 
   return (
-    <main className="flex-1 p-8">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <h1 className="mb-6 text-xl font-semibold">Real estate owners</h1>
 
       {owners === null ? (
@@ -41,7 +41,7 @@ export default function AdminOwnersPage() {
       ) : (
         <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
           {owners.map((owner) => (
-            <li key={owner._id} className="flex items-center justify-between p-4">
+            <li key={owner._id} className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="font-medium">{owner.companyName}</p>
                 <p className="text-sm text-gray-500">

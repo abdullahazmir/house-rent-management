@@ -44,7 +44,7 @@ export default function DashboardMaintenancePage() {
   };
 
   return (
-    <main className="flex-1 p-8">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <h1 className="mb-6 text-xl font-semibold">Maintenance requests</h1>
 
       {requests === null ? (
@@ -55,19 +55,19 @@ export default function DashboardMaintenancePage() {
         <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
           {requests.map((r) => (
             <li key={r._id} className="p-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-medium">
                     {r.title} <span className={`text-xs font-normal ${PRIORITY_STYLES[r.priority]}`}>({r.priority})</span>
                   </p>
                   <p className="text-sm text-gray-500">{r.description}</p>
                 </div>
-                <span className={`rounded-full px-2 py-1 text-xs font-medium ${STATUS_STYLES[r.status]}`}>
+                <span className={`self-start rounded-full px-2 py-1 text-xs font-medium sm:self-auto ${STATUS_STYLES[r.status]}`}>
                   {r.status.replace('_', ' ')}
                 </span>
               </div>
               {r.status !== 'resolved' && r.status !== 'cancelled' ? (
-                <div className="mt-3 flex gap-2">
+                <div className="mt-3 flex flex-wrap gap-2">
                   {r.status === 'open' ? (
                     <Button variant="secondary" disabled={busyId === r._id} onClick={() => setStatus(r._id, 'in_progress')}>
                       Mark in progress

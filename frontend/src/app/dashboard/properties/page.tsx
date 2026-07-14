@@ -61,8 +61,8 @@ export default function PropertiesPage() {
   };
 
   return (
-    <main className="flex-1 p-8">
-      <div className="mb-6 flex items-center justify-between">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl font-semibold">Properties</h1>
         <Button onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'Add property'}</Button>
       </div>
@@ -70,7 +70,7 @@ export default function PropertiesPage() {
       {showForm ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mb-8 grid max-w-2xl grid-cols-2 gap-4 rounded-md border border-gray-200 p-4"
+          className="mb-8 grid max-w-2xl grid-cols-1 gap-4 rounded-md border border-gray-200 p-4 sm:grid-cols-2"
         >
           <Input label="Property name" {...register('name')} error={errors.name?.message} />
           <div className="flex flex-col gap-1">
@@ -87,8 +87,8 @@ export default function PropertiesPage() {
           <Input label="City" {...register('city')} error={errors.city?.message} />
           <Input label="State" {...register('state')} error={errors.state?.message} />
           <Input label="ZIP" {...register('zip')} error={errors.zip?.message} />
-          {error ? <p className="col-span-2 text-sm text-red-600">{error}</p> : null}
-          <div className="col-span-2">
+          {error ? <p className="text-sm text-red-600 sm:col-span-2">{error}</p> : null}
+          <div className="sm:col-span-2">
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Saving…' : 'Save property'}
             </Button>
@@ -104,7 +104,10 @@ export default function PropertiesPage() {
         <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
           {properties.map((property) => (
             <li key={property._id} className="p-4 hover:bg-gray-50">
-              <Link href={`/dashboard/properties/${property._id}`} className="flex items-center justify-between">
+              <Link
+                href={`/dashboard/properties/${property._id}`}
+                className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-2"
+              >
                 <div>
                   <p className="font-medium">{property.name}</p>
                   <p className="text-sm text-gray-500">

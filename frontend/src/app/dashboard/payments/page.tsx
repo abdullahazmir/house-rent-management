@@ -68,8 +68,8 @@ export default function PaymentsPage() {
   };
 
   return (
-    <main className="flex-1 p-8">
-      <div className="mb-6 flex items-center justify-between">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl font-semibold">Payments</h1>
         <select
           value={statusFilter}
@@ -92,7 +92,7 @@ export default function PaymentsPage() {
         <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
           {payments.map((payment) => (
             <li key={payment._id} className="p-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-medium">
                     ${payment.amountDue}{' '}
@@ -127,7 +127,7 @@ export default function PaymentsPage() {
               {recordingId === payment._id ? (
                 <form
                   onSubmit={handleSubmit(onSubmitManualPayment)}
-                  className="mt-4 grid grid-cols-2 gap-4 rounded-md border border-gray-200 p-4"
+                  className="mt-4 grid grid-cols-1 gap-4 rounded-md border border-gray-200 p-4 sm:grid-cols-2"
                 >
                   <Input
                     label="Amount paid ($)"
@@ -144,11 +144,11 @@ export default function PaymentsPage() {
                       <option value="manual_other">Other</option>
                     </select>
                   </div>
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <Input label="Notes (optional)" {...register('notes')} />
                   </div>
-                  {error ? <p className="col-span-2 text-sm text-red-600">{error}</p> : null}
-                  <div className="col-span-2">
+                  {error ? <p className="text-sm text-red-600 sm:col-span-2">{error}</p> : null}
+                  <div className="sm:col-span-2">
                     <Button type="submit" disabled={isSubmitting}>
                       {isSubmitting ? 'Saving…' : 'Save payment'}
                     </Button>

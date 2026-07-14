@@ -54,14 +54,14 @@ export default function ConnectPaymentsSettingsPage() {
 
   if (!status) {
     return (
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8">
         <p className="text-sm text-gray-500">Loading…</p>
       </main>
     );
   }
 
   return (
-    <main className="flex-1 p-8">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <h1 className="mb-2 text-xl font-semibold">Rent collection</h1>
       <p className="mb-6 text-sm text-gray-600">
         Connect a Stripe account to accept rent payments online from your tenants. Payouts go directly to your bank

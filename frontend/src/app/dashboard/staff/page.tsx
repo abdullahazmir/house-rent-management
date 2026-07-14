@@ -63,8 +63,8 @@ export default function StaffPage() {
   };
 
   return (
-    <main className="flex-1 p-8">
-      <div className="mb-6 flex items-center justify-between">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl font-semibold">Staff</h1>
         <Button onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'Add staff member'}</Button>
       </div>
@@ -90,7 +90,7 @@ export default function StaffPage() {
       ) : (
         <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
           {staff.map((member) => (
-            <li key={member._id} className="flex items-center justify-between p-4">
+            <li key={member._id} className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
               <span className="font-medium">{member.email}</span>
               <div className="flex items-center gap-3">
                 <span

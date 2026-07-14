@@ -63,8 +63,8 @@ export default function TenantsPage() {
   };
 
   return (
-    <main className="flex-1 p-8">
-      <div className="mb-6 flex items-center justify-between">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl font-semibold">Tenants</h1>
         <Button onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'Invite tenant'}</Button>
       </div>
@@ -81,15 +81,15 @@ export default function TenantsPage() {
       {showForm ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mb-8 grid max-w-xl grid-cols-2 gap-4 rounded-md border border-gray-200 p-4"
+          className="mb-8 grid max-w-xl grid-cols-1 gap-4 rounded-md border border-gray-200 p-4 sm:grid-cols-2"
         >
           <Input label="First name" {...register('firstName')} error={errors.firstName?.message} />
           <Input label="Last name" {...register('lastName')} error={errors.lastName?.message} />
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <Input label="Email" type="email" {...register('email')} error={errors.email?.message} />
           </div>
-          {error ? <p className="col-span-2 text-sm text-red-600">{error}</p> : null}
-          <div className="col-span-2">
+          {error ? <p className="text-sm text-red-600 sm:col-span-2">{error}</p> : null}
+          <div className="sm:col-span-2">
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Sending invite…' : 'Send invite'}
             </Button>
@@ -104,14 +104,14 @@ export default function TenantsPage() {
       ) : (
         <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
           {tenants.map((tenant) => (
-            <li key={tenant._id} className="flex items-center justify-between p-4">
+            <li key={tenant._id} className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="font-medium">
                   {tenant.firstName} {tenant.lastName}
                 </p>
                 <p className="text-sm text-gray-500">{tenant.email}</p>
               </div>
-              <span className={`rounded-full px-2 py-1 text-xs font-medium ${STATUS_STYLES[tenant.status]}`}>
+              <span className={`self-start rounded-full px-2 py-1 text-xs font-medium sm:self-auto ${STATUS_STYLES[tenant.status]}`}>
                 {tenant.status}
               </span>
             </li>

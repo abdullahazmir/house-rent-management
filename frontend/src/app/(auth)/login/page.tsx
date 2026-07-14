@@ -40,7 +40,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex flex-1 items-center justify-center p-8">
+    <main className="flex flex-1 items-center justify-center p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-sm">
         <h1 className="mb-6 text-xl font-semibold">Log in</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">

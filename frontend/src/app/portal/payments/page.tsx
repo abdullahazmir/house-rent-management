@@ -57,7 +57,7 @@ export default function PortalPaymentsPage() {
   };
 
   return (
-    <main className="flex-1 p-8">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <h1 className="mb-6 text-xl font-semibold">Payments</h1>
 
       {error ? <p className="mb-4 text-sm text-red-600">{error}</p> : null}
@@ -72,7 +72,7 @@ export default function PortalPaymentsPage() {
             const owed = payment.amountDue + payment.lateFeeApplied - payment.amountPaid;
             const canPay = payment.status !== 'paid' && owed > 0;
             return (
-              <li key={payment._id} className="flex items-center justify-between p-4">
+              <li key={payment._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-medium">
                     ${payment.amountDue}
@@ -82,7 +82,7 @@ export default function PortalPaymentsPage() {
                   </p>
                   <p className="text-sm text-gray-500">Due {new Date(payment.dueDate).toLocaleDateString()}</p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <span className={`rounded-full px-2 py-1 text-xs font-medium ${STATUS_STYLES[payment.status]}`}>
                     {payment.status}
                   </span>
@@ -91,7 +91,7 @@ export default function PortalPaymentsPage() {
                       Receipt
                     </Link>
                   ) : canPay ? (
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <Button onClick={() => simulatePayment(payment._id)} disabled={busyId === payment._id}>
                         {busyId === payment._id ? 'Processing…' : `Simulate pay $${owed}`}
                       </Button>

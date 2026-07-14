@@ -42,7 +42,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="flex flex-1 items-center justify-center p-8">
+    <main className="flex flex-1 items-center justify-center p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-sm">
         <h1 className="mb-6 text-xl font-semibold">Create your account</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">

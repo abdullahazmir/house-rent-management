@@ -24,7 +24,7 @@ export function RoleGuard({ allowedRoles, children }: { allowedRoles: Role[]; ch
 
   if (isLoading || !user || !allowedRoles.includes(user.role)) {
     return (
-      <main className="flex flex-1 items-center justify-center p-8">
+      <main className="flex flex-1 items-center justify-center p-4 sm:p-6 lg:p-8">
         <p className="text-sm text-gray-500">Loading…</p>
       </main>
     );

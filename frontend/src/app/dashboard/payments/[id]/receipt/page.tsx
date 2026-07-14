@@ -15,14 +15,14 @@ export default function PaymentReceiptPage({ params }: { params: Promise<{ id: s
 
   if (!payment) {
     return (
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8">
         <p className="text-sm text-gray-500">Loading…</p>
       </main>
     );
   }
 
   return (
-    <main className="flex-1 p-8">
+    <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <div className="mx-auto max-w-md rounded-md border border-gray-200 p-8 print:border-none">
         <h1 className="mb-6 text-xl font-semibold">Payment receipt</h1>
         <dl className="space-y-3 text-sm">
