@@ -126,7 +126,9 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
   const payment = await payments.findOne({ _id: new ObjectId(paymentId) });
   if (!payment) return;
 
-  const charge = typeof paymentIntent.latest_charge === 'string' ? null : paymentIntent.latest_charge;
+  const latestCharge = paymentIntent.latest_charge;
+  const chargeId = typeof latestCharge === 'string' ? latestCharge : (latestCharge?.id ?? null);
+  const receiptUrl = typeof latestCharge === 'string' ? null : (latestCharge?.receipt_url ?? null);
 
   await payments.updateOne(
     { _id: payment._id },
@@ -137,8 +139,8 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
         paidDate: new Date(),
         method: 'stripe_online',
         stripePaymentIntentId: paymentIntent.id,
-        stripeChargeId: charge?.id ?? (typeof paymentIntent.latest_charge === 'string' ? paymentIntent.latest_charge : null),
-        receiptUrl: charge?.receipt_url ?? null,
+        stripeChargeId: chargeId,
+        receiptUrl,
         updatedAt: new Date(),
       },
     },

@@ -5,16 +5,11 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '../../lib/auth-context';
 
 const NAV_ITEMS = [
-  { href: '/dashboard', label: 'Overview' },
-  { href: '/dashboard/properties', label: 'Properties' },
-  { href: '/dashboard/leases', label: 'Leases' },
-  { href: '/dashboard/tenants', label: 'Tenants' },
-  { href: '/dashboard/payments', label: 'Payments' },
-  { href: '/dashboard/billing', label: 'Billing' },
-  { href: '/dashboard/settings/payments', label: 'Settings' },
+  { href: '/portal', label: 'My Lease' },
+  { href: '/portal/payments', label: 'Payments' },
 ];
 
-export function DashboardNav() {
+export function PortalNav() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();

@@ -13,4 +13,9 @@ export const paymentIdParamSchema = z.object({
   params: z.object({ id: z.string() }),
 });
 
+export const createSelfCheckoutSessionSchema = z.object({
+  body: z.object({ paymentId: z.string().min(1) }),
+});
+
 export type RecordManualPaymentInput = z.infer<typeof recordManualPaymentSchema>['body'];
+export type CreateSelfCheckoutSessionInput = z.infer<typeof createSelfCheckoutSessionSchema>['body'];

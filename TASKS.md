@@ -150,6 +150,6 @@ Copy this checklist and check items off as you complete and validate them:
 - [x] Phase 0 (P0.1–P0.13)
 - [x] Phase 1 (P1.1–P1.10)
 - [x] Phase 2 (P2.1–P2.9)
-- [ ] Phase 3 (P3.1–P3.9)
-- [ ] Phase 4 (P4.1–P4.4)
+- [x] Phase 3 (P3.1–P3.9) — code-complete and typechecked; live Stripe Connect account creation still blocked pending Connect signup propagation on the Stripe side (verify once unblocked)
+- [x] Phase 4 (P4.1–P4.4)
 - [ ] Phase 5 (P5.1–P5.5, optional/parallel tracks)
