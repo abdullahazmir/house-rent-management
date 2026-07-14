@@ -38,6 +38,42 @@ export async function getMyPaymentReceipt(req: Request, res: Response): Promise<
   res.status(200).json(payment);
 }
 
+/**
+ * Dev/demo convenience: marks a payment as paid without touching Stripe at all.
+ * Stand-in for real online payment while Connect isn't fully onboarded (Express/Standard
+ * accounts require the Stripe-hosted onboarding step — it can't be done via API).
+ */
+export async function simulateMyPayment(req: Request, res: Response): Promise<void> {
+  const tenant = await findTenantForUser(req);
+  const paymentId = parseObjectId(req.params.id, 'Payment not found');
+
+  const payments = getPaymentsCollection();
+  const payment = await payments.findOne({ _id: paymentId, tenantIds: tenant._id });
+  if (!payment) throw new NotFoundError('Payment not found');
+  if (payment.status === 'paid') throw new ValidationError('This payment has already been paid');
+
+  const amountOwed = payment.amountDue + payment.lateFeeApplied - payment.amountPaid;
+  if (amountOwed <= 0) throw new ValidationError('Nothing owed on this payment');
+
+  const now = new Date();
+  const result = await payments.findOneAndUpdate(
+    { _id: paymentId },
+    {
+      $set: {
+        status: 'paid',
+        amountPaid: payment.amountDue + payment.lateFeeApplied,
+        paidDate: now,
+        method: 'stripe_simulated',
+        notes: 'Simulated payment — no real money moved (Stripe Connect not fully onboarded).',
+        updatedAt: now,
+      },
+    },
+    { returnDocument: 'after' },
+  );
+
+  res.status(200).json(result);
+}
+
 export async function createMyCheckoutSession(
   req: Request<unknown, unknown, CreateSelfCheckoutSessionInput>,
   res: Response,

@@ -1,6 +1,6 @@
 import type { ObjectId } from 'mongodb';
 
-export type PaymentMethod = 'stripe_online' | 'manual_cash' | 'manual_check' | 'manual_other';
+export type PaymentMethod = 'stripe_online' | 'manual_cash' | 'manual_check' | 'manual_other' | 'stripe_simulated';
 export type PaymentStatus = 'pending' | 'paid' | 'partial' | 'late' | 'failed' | 'refunded';
 
 export interface PaymentDoc {

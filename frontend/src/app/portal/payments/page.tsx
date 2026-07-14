@@ -36,10 +36,22 @@ export default function PortalPaymentsPage() {
     setBusyId(paymentId);
     try {
       const res = await api.post<{ url: string }>('/payments/me/checkout-session', { paymentId });
-      // eslint-disable-next-line react-hooks/immutability -- full-page redirect to Stripe-hosted Checkout, not React state
       window.location.href = res.data.url;
     } catch (err) {
       setError(getApiErrorMessage(err, 'Could not start payment'));
+      setBusyId(null);
+    }
+  };
+
+  const simulatePayment = async (paymentId: string) => {
+    setError(null);
+    setBusyId(paymentId);
+    try {
+      await api.post(`/payments/me/${paymentId}/simulate`);
+      await load();
+    } catch (err) {
+      setError(getApiErrorMessage(err, 'Could not simulate payment'));
+    } finally {
       setBusyId(null);
     }
   };
@@ -79,9 +91,19 @@ export default function PortalPaymentsPage() {
                       Receipt
                     </Link>
                   ) : canPay ? (
-                    <Button onClick={() => payNow(payment._id)} disabled={busyId === payment._id}>
-                      {busyId === payment._id ? 'Redirecting…' : `Pay $${owed}`}
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <Button onClick={() => simulatePayment(payment._id)} disabled={busyId === payment._id}>
+                        {busyId === payment._id ? 'Processing…' : `Simulate pay $${owed}`}
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        onClick={() => payNow(payment._id)}
+                        disabled={busyId === payment._id}
+                        title="Real Stripe Checkout — requires the property manager to finish Connect onboarding"
+                      >
+                        Pay with Stripe
+                      </Button>
+                    </div>
                   ) : null}
                 </div>
               </li>
