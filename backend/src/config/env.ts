@@ -19,6 +19,12 @@ const envSchema = z.object({
   CLIENT_APP_URL: z.string().url().default('http://localhost:3000'),
   DEFAULT_TRIAL_DAYS: z.coerce.number().int().positive().default(14),
   COOKIE_DOMAIN: z.string().default('localhost'),
+
+  SMTP_HOST: z.string().optional().default(''),
+  SMTP_PORT: z.coerce.number().int().positive().optional().default(587),
+  SMTP_USER: z.string().optional().default(''),
+  SMTP_PASSWORD: z.string().optional().default(''),
+  SMTP_FROM: z.string().optional().default(''),
 });
 
 const parsed = envSchema.safeParse(process.env);
