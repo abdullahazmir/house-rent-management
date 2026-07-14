@@ -9,10 +9,10 @@ import { Button } from '../../../components/ui/Button';
 
 const STATUS_STYLES: Record<PaymentStatus, string> = {
   pending: 'bg-gray-100 text-gray-600',
-  paid: 'bg-green-100 text-green-800',
-  partial: 'bg-yellow-100 text-yellow-800',
-  late: 'bg-red-100 text-red-800',
-  failed: 'bg-red-100 text-red-800',
+  paid: 'bg-secondary/10 text-secondary',
+  partial: 'bg-muted text-brown',
+  late: 'bg-primary/10 text-brown',
+  failed: 'bg-primary/10 text-brown',
   refunded: 'bg-gray-100 text-gray-600',
 };
 
@@ -58,16 +58,16 @@ export default function PortalPaymentsPage() {
 
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <h1 className="mb-6 text-xl font-semibold">Payments</h1>
+      <h1 className="mb-6 text-xl font-semibold text-secondary">Payments</h1>
 
-      {error ? <p className="mb-4 text-sm text-red-600">{error}</p> : null}
+      {error ? <p className="mb-4 text-sm text-brown">{error}</p> : null}
 
       {payments === null ? (
         <p className="text-sm text-gray-500">Loading…</p>
       ) : payments.length === 0 ? (
         <p className="text-sm text-gray-500">No payments yet.</p>
       ) : (
-        <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
+        <ul className="divide-y divide-muted rounded-md border border-muted">
           {payments.map((payment) => {
             const owed = payment.amountDue + payment.lateFeeApplied - payment.amountPaid;
             const canPay = payment.status !== 'paid' && owed > 0;
@@ -77,7 +77,7 @@ export default function PortalPaymentsPage() {
                   <p className="font-medium">
                     ${payment.amountDue}
                     {payment.lateFeeApplied > 0 ? (
-                      <span className="text-sm text-red-600"> + ${payment.lateFeeApplied} late fee</span>
+                      <span className="text-sm text-brown"> + ${payment.lateFeeApplied} late fee</span>
                     ) : null}
                   </p>
                   <p className="text-sm text-gray-500">Due {new Date(payment.dueDate).toLocaleDateString()}</p>

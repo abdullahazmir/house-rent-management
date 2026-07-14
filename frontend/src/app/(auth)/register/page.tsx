@@ -44,7 +44,7 @@ export default function RegisterPage() {
   return (
     <main className="flex flex-1 items-center justify-center p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-sm">
-        <h1 className="mb-6 text-xl font-semibold">Create your account</h1>
+        <h1 className="mb-6 text-xl font-semibold text-secondary">Create your account</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <Input label="Company name" {...register('companyName')} error={errors.companyName?.message} />
           <Input label="Your name" {...register('contactName')} error={errors.contactName?.message} />
@@ -55,14 +55,14 @@ export default function RegisterPage() {
             {...register('password')}
             error={errors.password?.message}
           />
-          {serverError ? <p className="text-sm text-red-600">{serverError}</p> : null}
+          {serverError ? <p className="text-sm text-brown">{serverError}</p> : null}
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Creating account…' : 'Create account'}
           </Button>
         </form>
         <p className="mt-4 text-sm text-gray-600">
           Already have an account?{' '}
-          <Link href="/login" className="font-medium text-gray-900 underline">
+          <Link href="/login" className="font-medium text-secondary underline">
             Log in
           </Link>
         </p>

@@ -6,17 +6,17 @@ import type { MaintenanceRequest, MaintenanceStatus } from '../../../types/maint
 import { Button } from '../../../components/ui/Button';
 
 const STATUS_STYLES: Record<MaintenanceStatus, string> = {
-  open: 'bg-yellow-100 text-yellow-800',
-  in_progress: 'bg-blue-100 text-blue-800',
-  resolved: 'bg-green-100 text-green-800',
+  open: 'bg-muted text-brown',
+  in_progress: 'bg-highlight/40 text-secondary',
+  resolved: 'bg-secondary/10 text-secondary',
   cancelled: 'bg-gray-100 text-gray-600',
 };
 
 const PRIORITY_STYLES: Record<string, string> = {
   low: 'text-gray-500',
-  medium: 'text-gray-700',
-  high: 'text-orange-600',
-  urgent: 'text-red-600',
+  medium: 'text-secondary',
+  high: 'font-semibold text-primary',
+  urgent: 'font-bold text-brown',
 };
 
 export default function DashboardMaintenancePage() {
@@ -45,14 +45,14 @@ export default function DashboardMaintenancePage() {
 
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <h1 className="mb-6 text-xl font-semibold">Maintenance requests</h1>
+      <h1 className="mb-6 text-xl font-semibold text-secondary">Maintenance requests</h1>
 
       {requests === null ? (
         <p className="text-sm text-gray-500">Loading…</p>
       ) : requests.length === 0 ? (
         <p className="text-sm text-gray-500">No maintenance requests yet.</p>
       ) : (
-        <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
+        <ul className="divide-y divide-muted rounded-md border border-muted">
           {requests.map((r) => (
             <li key={r._id} className="p-4">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">

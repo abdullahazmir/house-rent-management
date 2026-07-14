@@ -21,11 +21,11 @@ export default async function PricingPage() {
 
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <h1 className="mb-8 text-center text-3xl font-semibold">Simple, transparent pricing</h1>
+      <h1 className="mb-8 text-center text-3xl font-semibold text-secondary">Simple, transparent pricing</h1>
       <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {plans.map((plan) => (
-          <div key={plan._id} className="flex flex-col rounded-md border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold">{plan.name}</h2>
+          <div key={plan._id} className="flex flex-col rounded-md border border-muted p-6">
+            <h2 className="text-lg font-semibold text-secondary">{plan.name}</h2>
             <p className="mt-2 text-3xl font-bold">
               ${plan.price}
               <span className="text-base font-normal text-gray-500">/{plan.billingInterval}</span>

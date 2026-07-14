@@ -30,7 +30,7 @@ function AcceptInviteForm() {
   } = useForm<AcceptInviteFormValues>({ resolver: zodResolver(acceptInviteFormSchema) });
 
   if (!token) {
-    return <p className="text-sm text-red-600">This invite link is missing a token. Ask your property manager to resend it.</p>;
+    return <p className="text-sm text-brown">This invite link is missing a token. Ask your property manager to resend it.</p>;
   }
 
   const onSubmit = async (values: AcceptInviteFormValues) => {
@@ -45,11 +45,11 @@ function AcceptInviteForm() {
 
   return (
     <div className="w-full max-w-sm">
-      <h1 className="mb-2 text-xl font-semibold">Set your password</h1>
+      <h1 className="mb-2 text-xl font-semibold text-secondary">Set your password</h1>
       <p className="mb-6 text-sm text-gray-600">Finish setting up your renter account to view your lease and pay rent online.</p>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <Input label="Password" type="password" {...register('password')} error={errors.password?.message} />
-        {serverError ? <p className="text-sm text-red-600">{serverError}</p> : null}
+        {serverError ? <p className="text-sm text-brown">{serverError}</p> : null}
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Setting up…' : 'Activate my account'}
         </Button>

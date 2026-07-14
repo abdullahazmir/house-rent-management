@@ -65,18 +65,18 @@ export default function StaffPage() {
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-xl font-semibold">Staff</h1>
+        <h1 className="text-xl font-semibold text-secondary">Staff</h1>
         <Button onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'Add staff member'}</Button>
       </div>
 
       {showForm ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mb-8 grid max-w-md grid-cols-1 gap-4 rounded-md border border-gray-200 p-4"
+          className="mb-8 grid max-w-md grid-cols-1 gap-4 rounded-md border border-muted p-4"
         >
           <Input label="Email" type="email" {...register('email')} error={errors.email?.message} />
           <Input label="Temporary password" type="password" {...register('password')} error={errors.password?.message} />
-          {error ? <p className="text-sm text-red-600">{error}</p> : null}
+          {error ? <p className="text-sm text-brown">{error}</p> : null}
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Creating…' : 'Create account'}
           </Button>
@@ -88,14 +88,14 @@ export default function StaffPage() {
       ) : staff.length === 0 ? (
         <p className="text-sm text-gray-500">No staff accounts yet. Staff can manage properties, leases, and tenants, but never billing.</p>
       ) : (
-        <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
+        <ul className="divide-y divide-muted rounded-md border border-muted">
           {staff.map((member) => (
             <li key={member._id} className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
               <span className="font-medium">{member.email}</span>
               <div className="flex items-center gap-3">
                 <span
                   className={`rounded-full px-2 py-1 text-xs font-medium ${
-                    member.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    member.isActive ? 'bg-secondary/10 text-secondary' : 'bg-primary/10 text-brown'
                   }`}
                 >
                   {member.isActive ? 'active' : 'inactive'}

@@ -32,14 +32,14 @@ export default function AdminOwnersPage() {
 
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <h1 className="mb-6 text-xl font-semibold">Real estate owners</h1>
+      <h1 className="mb-6 text-xl font-semibold text-secondary">Real estate owners</h1>
 
       {owners === null ? (
         <p className="text-sm text-gray-500">Loading…</p>
       ) : owners.length === 0 ? (
         <p className="text-sm text-gray-500">No owners have signed up yet.</p>
       ) : (
-        <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
+        <ul className="divide-y divide-muted rounded-md border border-muted">
           {owners.map((owner) => (
             <li key={owner._id} className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
@@ -51,7 +51,7 @@ export default function AdminOwnersPage() {
               <div className="flex items-center gap-3">
                 <span
                   className={`rounded-full px-2 py-1 text-xs font-medium ${
-                    owner.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    owner.status === 'active' ? 'bg-secondary/10 text-secondary' : 'bg-primary/10 text-brown'
                   }`}
                 >
                   {owner.status}

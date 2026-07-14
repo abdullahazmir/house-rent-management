@@ -11,9 +11,9 @@ import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 
 const STATUS_STYLES: Record<MaintenanceStatus, string> = {
-  open: 'bg-yellow-100 text-yellow-800',
-  in_progress: 'bg-blue-100 text-blue-800',
-  resolved: 'bg-green-100 text-green-800',
+  open: 'bg-muted text-brown',
+  in_progress: 'bg-highlight/40 text-secondary',
+  resolved: 'bg-secondary/10 text-secondary',
   cancelled: 'bg-gray-100 text-gray-600',
 };
 
@@ -62,33 +62,33 @@ export default function PortalMaintenancePage() {
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-xl font-semibold">Maintenance requests</h1>
+        <h1 className="text-xl font-semibold text-secondary">Maintenance requests</h1>
         <Button onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'New request'}</Button>
       </div>
 
       {showForm ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mb-8 grid max-w-xl grid-cols-1 gap-4 rounded-md border border-gray-200 p-4 sm:grid-cols-2"
+          className="mb-8 grid max-w-xl grid-cols-1 gap-4 rounded-md border border-muted p-4 sm:grid-cols-2"
         >
           <div className="sm:col-span-2">
             <Input label="Title" {...register('title')} error={errors.title?.message} />
           </div>
           <div className="flex flex-col gap-1 sm:col-span-2">
-            <label className="text-sm font-medium text-gray-700">Description</label>
-            <textarea {...register('description')} rows={3} className="rounded-md border border-gray-300 px-3 py-2 text-sm" />
-            {errors.description ? <p className="text-xs text-red-600">{errors.description.message}</p> : null}
+            <label className="text-sm font-medium text-secondary">Description</label>
+            <textarea {...register('description')} rows={3} className="rounded-md border border-secondary/30 px-3 py-2 text-sm" />
+            {errors.description ? <p className="text-xs text-brown">{errors.description.message}</p> : null}
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Priority</label>
-            <select {...register('priority')} className="rounded-md border border-gray-300 px-3 py-2 text-sm">
+            <label className="text-sm font-medium text-secondary">Priority</label>
+            <select {...register('priority')} className="rounded-md border border-secondary/30 px-3 py-2 text-sm">
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
               <option value="urgent">Urgent</option>
             </select>
           </div>
-          {error ? <p className="text-sm text-red-600 sm:col-span-2">{error}</p> : null}
+          {error ? <p className="text-sm text-brown sm:col-span-2">{error}</p> : null}
           <div className="sm:col-span-2">
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Submitting…' : 'Submit request'}
@@ -102,7 +102,7 @@ export default function PortalMaintenancePage() {
       ) : requests.length === 0 ? (
         <p className="text-sm text-gray-500">No maintenance requests yet.</p>
       ) : (
-        <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
+        <ul className="divide-y divide-muted rounded-md border border-muted">
           {requests.map((r) => (
             <li key={r._id} className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div>

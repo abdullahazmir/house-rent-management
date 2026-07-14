@@ -13,9 +13,9 @@ interface AdminAnalytics {
 
 function StatTile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md border border-gray-200 p-4">
+    <div className="rounded-md border border-muted p-4">
       <p className="text-sm text-gray-500">{label}</p>
-      <p className="mt-1 text-2xl font-semibold">{value}</p>
+      <p className="mt-1 text-2xl font-semibold text-secondary">{value}</p>
     </div>
   );
 }
@@ -29,7 +29,7 @@ export default function AdminHomePage() {
 
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <h1 className="mb-6 text-xl font-semibold">Super Admin</h1>
+      <h1 className="mb-6 text-xl font-semibold text-secondary">Super Admin</h1>
 
       {stats ? (
         <div className="mb-8 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
@@ -40,7 +40,7 @@ export default function AdminHomePage() {
         </div>
       ) : null}
 
-      <Link href="/admin/owners" className="inline-block rounded-md border border-gray-200 p-4 hover:bg-gray-50">
+      <Link href="/admin/owners" className="inline-block rounded-md border border-muted p-4 hover:bg-muted/30">
         <p className="font-medium">Real estate owners</p>
         <p className="text-sm text-gray-500">View, suspend, and activate owner accounts</p>
       </Link>

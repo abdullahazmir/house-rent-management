@@ -62,15 +62,15 @@ export default function ConnectPaymentsSettingsPage() {
 
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <h1 className="mb-2 text-xl font-semibold">Rent collection</h1>
+      <h1 className="mb-2 text-xl font-semibold text-secondary">Rent collection</h1>
       <p className="mb-6 text-sm text-gray-600">
         Connect a Stripe account to accept rent payments online from your tenants. Payouts go directly to your bank
         account.
       </p>
 
-      {error ? <p className="mb-4 text-sm text-red-600">{error}</p> : null}
+      {error ? <p className="mb-4 text-sm text-brown">{error}</p> : null}
 
-      <div className="max-w-md rounded-md border border-gray-200 p-6">
+      <div className="max-w-md rounded-md border border-muted p-6">
         <dl className="mb-4 space-y-2 text-sm">
           <div className="flex justify-between">
             <dt className="text-gray-500">Onboarding</dt>

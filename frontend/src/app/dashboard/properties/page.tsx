@@ -63,19 +63,19 @@ export default function PropertiesPage() {
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-xl font-semibold">Properties</h1>
+        <h1 className="text-xl font-semibold text-secondary">Properties</h1>
         <Button onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'Add property'}</Button>
       </div>
 
       {showForm ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mb-8 grid max-w-2xl grid-cols-1 gap-4 rounded-md border border-gray-200 p-4 sm:grid-cols-2"
+          className="mb-8 grid max-w-2xl grid-cols-1 gap-4 rounded-md border border-muted p-4 sm:grid-cols-2"
         >
           <Input label="Property name" {...register('name')} error={errors.name?.message} />
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Type</label>
-            <select {...register('type')} className="rounded-md border border-gray-300 px-3 py-2 text-sm">
+            <label className="text-sm font-medium text-secondary">Type</label>
+            <select {...register('type')} className="rounded-md border border-secondary/30 px-3 py-2 text-sm">
               {PROPERTY_TYPES.map((t) => (
                 <option key={t} value={t}>
                   {t.replace('_', ' ')}
@@ -87,7 +87,7 @@ export default function PropertiesPage() {
           <Input label="City" {...register('city')} error={errors.city?.message} />
           <Input label="State" {...register('state')} error={errors.state?.message} />
           <Input label="ZIP" {...register('zip')} error={errors.zip?.message} />
-          {error ? <p className="text-sm text-red-600 sm:col-span-2">{error}</p> : null}
+          {error ? <p className="text-sm text-brown sm:col-span-2">{error}</p> : null}
           <div className="sm:col-span-2">
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Saving…' : 'Save property'}
@@ -101,9 +101,9 @@ export default function PropertiesPage() {
       ) : properties.length === 0 ? (
         <p className="text-sm text-gray-500">No properties yet. Add your first one above.</p>
       ) : (
-        <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
+        <ul className="divide-y divide-muted rounded-md border border-muted">
           {properties.map((property) => (
-            <li key={property._id} className="p-4 hover:bg-gray-50">
+            <li key={property._id} className="p-4 hover:bg-muted/30">
               <Link
                 href={`/dashboard/properties/${property._id}`}
                 className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-2"

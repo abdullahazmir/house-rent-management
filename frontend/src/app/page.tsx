@@ -4,7 +4,7 @@ import { Button } from '../components/ui/Button';
 export default function Home() {
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-6 p-4 text-center sm:p-6 lg:p-8">
-      <h1 className="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
+      <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-secondary sm:text-4xl">
         Property management, rent collection, and billing — all in one place.
       </h1>
       <p className="max-w-xl text-gray-600">

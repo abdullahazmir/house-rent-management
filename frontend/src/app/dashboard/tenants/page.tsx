@@ -19,8 +19,8 @@ const inviteFormSchema = z.object({
 type InviteFormValues = z.infer<typeof inviteFormSchema>;
 
 const STATUS_STYLES: Record<Tenant['status'], string> = {
-  invited: 'bg-yellow-100 text-yellow-800',
-  active: 'bg-green-100 text-green-800',
+  invited: 'bg-muted text-brown',
+  active: 'bg-secondary/10 text-secondary',
   past: 'bg-gray-100 text-gray-600',
   inactive: 'bg-gray-100 text-gray-600',
 };
@@ -65,14 +65,14 @@ export default function TenantsPage() {
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-xl font-semibold">Tenants</h1>
+        <h1 className="text-xl font-semibold text-secondary">Tenants</h1>
         <Button onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'Invite tenant'}</Button>
       </div>
 
       {lastInviteLink ? (
-        <div className="mb-6 rounded-md border border-blue-200 bg-blue-50 p-4 text-sm">
-          <p className="font-medium text-blue-900">Invite created — no email provider is wired up yet.</p>
-          <p className="mt-1 break-all text-blue-800">
+        <div className="mb-6 rounded-md border border-highlight bg-highlight/20 p-4 text-sm">
+          <p className="font-medium text-secondary">Invite created — no email provider is wired up yet.</p>
+          <p className="mt-1 break-all text-secondary">
             Share this link with the tenant directly: <span className="font-mono">{lastInviteLink}</span>
           </p>
         </div>
@@ -81,14 +81,14 @@ export default function TenantsPage() {
       {showForm ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mb-8 grid max-w-xl grid-cols-1 gap-4 rounded-md border border-gray-200 p-4 sm:grid-cols-2"
+          className="mb-8 grid max-w-xl grid-cols-1 gap-4 rounded-md border border-muted p-4 sm:grid-cols-2"
         >
           <Input label="First name" {...register('firstName')} error={errors.firstName?.message} />
           <Input label="Last name" {...register('lastName')} error={errors.lastName?.message} />
           <div className="sm:col-span-2">
             <Input label="Email" type="email" {...register('email')} error={errors.email?.message} />
           </div>
-          {error ? <p className="text-sm text-red-600 sm:col-span-2">{error}</p> : null}
+          {error ? <p className="text-sm text-brown sm:col-span-2">{error}</p> : null}
           <div className="sm:col-span-2">
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Sending invite…' : 'Send invite'}
@@ -102,7 +102,7 @@ export default function TenantsPage() {
       ) : tenants.length === 0 ? (
         <p className="text-sm text-gray-500">No tenants yet. Invite one above.</p>
       ) : (
-        <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
+        <ul className="divide-y divide-muted rounded-md border border-muted">
           {tenants.map((tenant) => (
             <li key={tenant._id} className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div>

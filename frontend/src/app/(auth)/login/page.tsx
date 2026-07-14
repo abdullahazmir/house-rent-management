@@ -42,7 +42,7 @@ export default function LoginPage() {
   return (
     <main className="flex flex-1 items-center justify-center p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-sm">
-        <h1 className="mb-6 text-xl font-semibold">Log in</h1>
+        <h1 className="mb-6 text-xl font-semibold text-secondary">Log in</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <Input label="Email" type="email" {...register('email')} error={errors.email?.message} />
           <Input
@@ -51,18 +51,18 @@ export default function LoginPage() {
             {...register('password')}
             error={errors.password?.message}
           />
-          {serverError ? <p className="text-sm text-red-600">{serverError}</p> : null}
+          {serverError ? <p className="text-sm text-brown">{serverError}</p> : null}
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Logging in…' : 'Log in'}
           </Button>
         </form>
         <div className="mt-4 flex flex-col gap-1 text-sm text-gray-600">
-          <Link href="/forgot-password" className="underline">
+          <Link href="/forgot-password" className="underline hover:text-secondary">
             Forgot password?
           </Link>
           <span>
             Don&apos;t have an account?{' '}
-            <Link href="/register" className="font-medium text-gray-900 underline">
+            <Link href="/register" className="font-medium text-secondary underline">
               Register your company
             </Link>
           </span>

@@ -17,9 +17,9 @@ interface OwnerAnalytics {
 
 function StatTile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md border border-gray-200 p-4">
+    <div className="rounded-md border border-muted p-4">
       <p className="text-sm text-gray-500">{label}</p>
-      <p className="mt-1 text-2xl font-semibold">{value}</p>
+      <p className="mt-1 text-2xl font-semibold text-secondary">{value}</p>
     </div>
   );
 }
@@ -34,7 +34,7 @@ export default function DashboardHomePage() {
 
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <h1 className="mb-2 text-xl font-semibold">Welcome{user ? `, ${user.email}` : ''}</h1>
+      <h1 className="mb-2 text-xl font-semibold text-secondary">Welcome{user ? `, ${user.email}` : ''}</h1>
       <p className="mb-6 text-sm text-gray-600">Manage your properties, leases, and tenants.</p>
 
       {stats ? (
@@ -47,15 +47,15 @@ export default function DashboardHomePage() {
       ) : null}
 
       <div className="grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3">
-        <Link href="/dashboard/properties" className="rounded-md border border-gray-200 p-4 hover:bg-gray-50">
+        <Link href="/dashboard/properties" className="rounded-md border border-muted p-4 hover:bg-muted/30">
           <p className="font-medium">Properties</p>
           <p className="text-sm text-gray-500">Manage properties &amp; units</p>
         </Link>
-        <Link href="/dashboard/leases" className="rounded-md border border-gray-200 p-4 hover:bg-gray-50">
+        <Link href="/dashboard/leases" className="rounded-md border border-muted p-4 hover:bg-muted/30">
           <p className="font-medium">Leases</p>
           <p className="text-sm text-gray-500">Create &amp; track leases</p>
         </Link>
-        <Link href="/dashboard/tenants" className="rounded-md border border-gray-200 p-4 hover:bg-gray-50">
+        <Link href="/dashboard/tenants" className="rounded-md border border-muted p-4 hover:bg-muted/30">
           <p className="font-medium">Tenants</p>
           <p className="text-sm text-gray-500">Invite &amp; manage renters</p>
         </Link>

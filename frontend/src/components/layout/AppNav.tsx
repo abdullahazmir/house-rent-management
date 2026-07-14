@@ -22,14 +22,14 @@ export function AppNav({ title, navItems }: { title: string; navItems: NavItem[]
   };
 
   return (
-    <header className="border-b border-gray-200">
+    <header className="bg-secondary text-white">
       <div className="flex items-center justify-between p-4">
         <span className="font-semibold">{title}</span>
 
         {/* Desktop: user info + logout inline. Mobile/tablet: hamburger toggle. */}
-        <div className="hidden items-center gap-4 text-sm text-gray-600 lg:flex">
+        <div className="hidden items-center gap-4 text-sm text-white/80 lg:flex">
           {user ? <span>{user.email}</span> : null}
-          <button onClick={handleLogout} className="underline">
+          <button onClick={handleLogout} className="underline hover:text-highlight">
             Log out
           </button>
         </div>
@@ -38,7 +38,7 @@ export function AppNav({ title, navItems }: { title: string; navItems: NavItem[]
           onClick={() => setMenuOpen((v) => !v)}
           aria-expanded={menuOpen}
           aria-label="Toggle menu"
-          className="flex h-9 w-9 items-center justify-center rounded-md border border-gray-300 lg:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-md border border-white/30 text-white lg:hidden"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2}>
             {menuOpen ? (
@@ -59,7 +59,7 @@ export function AppNav({ title, navItems }: { title: string; navItems: NavItem[]
               key={item.href}
               href={item.href}
               className={`rounded-t-md px-3 py-2 text-sm font-medium ${
-                isActive ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900'
+                isActive ? 'bg-white text-secondary' : 'text-white/75 hover:text-white'
               }`}
             >
               {item.label}
@@ -70,7 +70,7 @@ export function AppNav({ title, navItems }: { title: string; navItems: NavItem[]
 
       {/* Mobile/tablet dropdown menu */}
       {menuOpen ? (
-        <nav className="flex flex-col gap-1 border-t border-gray-200 p-4 lg:hidden">
+        <nav className="flex flex-col gap-1 border-t border-white/20 p-4 lg:hidden">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -79,16 +79,16 @@ export function AppNav({ title, navItems }: { title: string; navItems: NavItem[]
                 href={item.href}
                 onClick={() => setMenuOpen(false)}
                 className={`rounded-md px-3 py-2 text-sm font-medium ${
-                  isActive ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900'
+                  isActive ? 'bg-white text-secondary' : 'text-white/75 hover:text-white'
                 }`}
               >
                 {item.label}
               </Link>
             );
           })}
-          <div className="mt-2 flex items-center justify-between border-t border-gray-200 pt-3 text-sm text-gray-600">
+          <div className="mt-2 flex items-center justify-between border-t border-white/20 pt-3 text-sm text-white/80">
             {user ? <span>{user.email}</span> : <span />}
-            <button onClick={handleLogout} className="underline">
+            <button onClick={handleLogout} className="underline hover:text-highlight">
               Log out
             </button>
           </div>

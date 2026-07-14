@@ -77,13 +77,13 @@ export default function BillingPage() {
 
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <h1 className="mb-2 text-xl font-semibold">Billing</h1>
+      <h1 className="mb-2 text-xl font-semibold text-secondary">Billing</h1>
       <p className="mb-6 text-sm text-gray-600">
         Current status: <span className="font-medium">{subscription.status.replace('_', ' ')}</span>
         {subscription.plan ? ` — ${subscription.plan.name}` : ''}
       </p>
 
-      {error ? <p className="mb-4 text-sm text-red-600">{error}</p> : null}
+      {error ? <p className="mb-4 text-sm text-brown">{error}</p> : null}
 
       {subscription.plan ? (
         <Button variant="secondary" onClick={openPortal} disabled={portalBusy}>
@@ -95,8 +95,8 @@ export default function BillingPage() {
         {plans.map((plan) => {
           const isCurrent = subscription.plan?._id === plan._id;
           return (
-            <div key={plan._id} className="flex flex-col rounded-md border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold">{plan.name}</h2>
+            <div key={plan._id} className="flex flex-col rounded-md border border-muted p-6">
+              <h2 className="text-lg font-semibold text-secondary">{plan.name}</h2>
               <p className="mt-2 text-2xl font-bold">
                 ${plan.price}
                 <span className="text-base font-normal text-gray-500">/{plan.billingInterval}</span>

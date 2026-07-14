@@ -13,10 +13,10 @@ import { Input } from '../../../components/ui/Input';
 
 const STATUS_STYLES: Record<PaymentStatus, string> = {
   pending: 'bg-gray-100 text-gray-600',
-  paid: 'bg-green-100 text-green-800',
-  partial: 'bg-yellow-100 text-yellow-800',
-  late: 'bg-red-100 text-red-800',
-  failed: 'bg-red-100 text-red-800',
+  paid: 'bg-secondary/10 text-secondary',
+  partial: 'bg-muted text-brown',
+  late: 'bg-primary/10 text-brown',
+  failed: 'bg-primary/10 text-brown',
   refunded: 'bg-gray-100 text-gray-600',
 };
 
@@ -70,11 +70,11 @@ export default function PaymentsPage() {
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-xl font-semibold">Payments</h1>
+        <h1 className="text-xl font-semibold text-secondary">Payments</h1>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-md border border-gray-300 px-3 py-2 text-sm"
+          className="rounded-md border border-secondary/30 px-3 py-2 text-sm"
         >
           <option value="">All statuses</option>
           <option value="pending">Pending</option>
@@ -89,7 +89,7 @@ export default function PaymentsPage() {
       ) : payments.length === 0 ? (
         <p className="text-sm text-gray-500">No payments found.</p>
       ) : (
-        <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
+        <ul className="divide-y divide-muted rounded-md border border-muted">
           {payments.map((payment) => (
             <li key={payment._id} className="p-4">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -97,7 +97,7 @@ export default function PaymentsPage() {
                   <p className="font-medium">
                     ${payment.amountDue}{' '}
                     {payment.lateFeeApplied > 0 ? (
-                      <span className="text-sm text-red-600">+ ${payment.lateFeeApplied} late fee</span>
+                      <span className="text-sm text-brown">+ ${payment.lateFeeApplied} late fee</span>
                     ) : null}
                   </p>
                   <p className="text-sm text-gray-500">Due {new Date(payment.dueDate).toLocaleDateString()}</p>
@@ -127,7 +127,7 @@ export default function PaymentsPage() {
               {recordingId === payment._id ? (
                 <form
                   onSubmit={handleSubmit(onSubmitManualPayment)}
-                  className="mt-4 grid grid-cols-1 gap-4 rounded-md border border-gray-200 p-4 sm:grid-cols-2"
+                  className="mt-4 grid grid-cols-1 gap-4 rounded-md border border-muted p-4 sm:grid-cols-2"
                 >
                   <Input
                     label="Amount paid ($)"
@@ -137,8 +137,8 @@ export default function PaymentsPage() {
                     error={errors.amountPaid?.message}
                   />
                   <div className="flex flex-col gap-1">
-                    <label className="text-sm font-medium text-gray-700">Method</label>
-                    <select {...register('method')} className="rounded-md border border-gray-300 px-3 py-2 text-sm">
+                    <label className="text-sm font-medium text-secondary">Method</label>
+                    <select {...register('method')} className="rounded-md border border-secondary/30 px-3 py-2 text-sm">
                       <option value="manual_cash">Cash</option>
                       <option value="manual_check">Check</option>
                       <option value="manual_other">Other</option>
@@ -147,7 +147,7 @@ export default function PaymentsPage() {
                   <div className="sm:col-span-2">
                     <Input label="Notes (optional)" {...register('notes')} />
                   </div>
-                  {error ? <p className="text-sm text-red-600 sm:col-span-2">{error}</p> : null}
+                  {error ? <p className="text-sm text-brown sm:col-span-2">{error}</p> : null}
                   <div className="sm:col-span-2">
                     <Button type="submit" disabled={isSubmitting}>
                       {isSubmitting ? 'Saving…' : 'Save payment'}

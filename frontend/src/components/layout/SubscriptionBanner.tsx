@@ -27,7 +27,7 @@ export function SubscriptionBanner() {
   if (!status || !RESTRICTED_STATUSES.has(status)) return null;
 
   return (
-    <div className="bg-red-50 px-4 py-2 text-center text-sm text-red-800">
+    <div className="bg-primary/10 px-4 py-2 text-center text-sm text-brown">
       Your subscription is {status.replace('_', ' ')}.{' '}
       <Link href="/dashboard/billing" className="font-medium underline">
         Update billing

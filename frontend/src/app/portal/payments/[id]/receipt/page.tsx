@@ -23,8 +23,8 @@ export default function PortalPaymentReceiptPage({ params }: { params: Promise<{
 
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <div className="mx-auto max-w-md rounded-md border border-gray-200 p-8 print:border-none">
-        <h1 className="mb-6 text-xl font-semibold">Payment receipt</h1>
+      <div className="mx-auto max-w-md rounded-md border border-muted p-8 print:border-none">
+        <h1 className="mb-6 text-xl font-semibold text-secondary">Payment receipt</h1>
         <dl className="space-y-3 text-sm">
           <div className="flex justify-between">
             <dt className="text-gray-500">Amount paid</dt>

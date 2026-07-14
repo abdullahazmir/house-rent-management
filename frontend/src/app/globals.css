@@ -3,11 +3,23 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Brand palette */
+  --color-primary: #bc6c50; /* Terracotta — primary buttons, key CTAs, active states */
+  --color-secondary: #304c53; /* Dark Teal — headings, nav bar, footer, dark UI sections */
+  --color-muted: #ddad9c; /* Blush/Peach — soft backgrounds, cards, subtle dividers */
+  --color-brown: #5a2f25; /* Dark Brown — hover states, borders, high-contrast text */
+  --color-highlight: #afe0e7; /* Pastel Blue — sparing accents: buttons, links, highlights */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-muted: var(--color-muted);
+  --color-brown: var(--color-brown);
+  --color-highlight: var(--color-highlight);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

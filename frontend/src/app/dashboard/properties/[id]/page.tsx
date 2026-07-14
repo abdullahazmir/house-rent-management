@@ -69,26 +69,26 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
 
   return (
     <main className="flex-1 p-4 sm:p-6 lg:p-8">
-      <h1 className="text-xl font-semibold">{property.name}</h1>
+      <h1 className="text-xl font-semibold text-secondary">{property.name}</h1>
       <p className="mb-6 text-sm text-gray-500">
         {property.addressLine1}, {property.city}, {property.state} {property.zip}
       </p>
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-lg font-medium">Units</h2>
+        <h2 className="text-lg font-medium text-secondary">Units</h2>
         <Button onClick={() => setShowForm((v) => !v)}>{showForm ? 'Cancel' : 'Add unit'}</Button>
       </div>
 
       {showForm ? (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mb-6 grid max-w-xl grid-cols-1 gap-4 rounded-md border border-gray-200 p-4 sm:grid-cols-2"
+          className="mb-6 grid max-w-xl grid-cols-1 gap-4 rounded-md border border-muted p-4 sm:grid-cols-2"
         >
           <Input label="Unit number" {...register('unitNumber')} error={errors.unitNumber?.message} />
           <Input label="Monthly rent ($)" type="number" step="0.01" {...register('marketRent')} error={errors.marketRent?.message} />
           <Input label="Bedrooms" type="number" {...register('bedrooms')} error={errors.bedrooms?.message} />
           <Input label="Bathrooms" type="number" step="0.5" {...register('bathrooms')} error={errors.bathrooms?.message} />
-          {error ? <p className="text-sm text-red-600 sm:col-span-2">{error}</p> : null}
+          {error ? <p className="text-sm text-brown sm:col-span-2">{error}</p> : null}
           <div className="sm:col-span-2">
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Saving…' : 'Save unit'}
@@ -100,7 +100,7 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
       {units.length === 0 ? (
         <p className="text-sm text-gray-500">No units yet. Add one above.</p>
       ) : (
-        <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
+        <ul className="divide-y divide-muted rounded-md border border-muted">
           {units.map((unit) => (
             <li key={unit._id} className="flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
@@ -112,10 +112,10 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
               <span
                 className={`self-start rounded-full px-2 py-1 text-xs font-medium sm:self-auto ${
                   unit.status === 'vacant'
-                    ? 'bg-green-100 text-green-800'
+                    ? 'bg-secondary/10 text-secondary'
                     : unit.status === 'occupied'
-                      ? 'bg-blue-100 text-blue-800'
-                      : 'bg-yellow-100 text-yellow-800'
+                      ? 'bg-highlight/40 text-secondary'
+                      : 'bg-muted text-brown'
                 }`}
               >
                 {unit.status}

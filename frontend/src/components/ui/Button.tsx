@@ -3,8 +3,8 @@ import type { ButtonHTMLAttributes } from 'react';
 type Variant = 'primary' | 'secondary';
 
 const VARIANT_CLASSES: Record<Variant, string> = {
-  primary: 'bg-gray-900 text-white hover:bg-gray-700 disabled:bg-gray-400',
-  secondary: 'bg-white text-gray-900 border border-gray-300 hover:bg-gray-50',
+  primary: 'bg-primary text-white hover:bg-brown disabled:bg-muted disabled:text-brown/60',
+  secondary: 'bg-white text-secondary border border-secondary/30 hover:bg-muted/30',
 };
 
 export function Button({
