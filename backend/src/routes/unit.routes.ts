@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { validate } from '../middleware/validate';
+import { requireActiveSubscription } from '../middleware/requireActiveSubscription';
+import { enforcePlanLimits } from '../middleware/enforcePlanLimits';
 import {
   createUnitSchema,
   updateUnitSchema,
@@ -12,7 +14,7 @@ import { listUnits, createUnit, getUnit, updateUnit, deleteUnit } from '../contr
 const router = Router({ mergeParams: true });
 
 router.get('/', validate(listUnitsParamSchema), listUnits);
-router.post('/', validate(createUnitSchema), createUnit);
+router.post('/', requireActiveSubscription, enforcePlanLimits('units'), validate(createUnitSchema), createUnit);
 router.get('/:id', validate(unitIdParamSchema), getUnit);
 router.patch('/:id', validate(updateUnitSchema), updateUnit);
 router.delete('/:id', validate(unitIdParamSchema), deleteUnit);

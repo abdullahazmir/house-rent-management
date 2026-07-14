@@ -15,6 +15,7 @@ export default function AdminOwnersPage() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional fetch-on-mount, reused after mutations below
     void loadOwners();
   }, []);
 

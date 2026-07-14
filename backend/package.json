@@ -9,7 +9,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "lint": "eslint .",
-    "seed:admin": "tsx src/scripts/seedSuperAdmin.ts"
+    "seed:admin": "tsx src/scripts/seedSuperAdmin.ts",
+    "seed:plans": "tsx src/scripts/seedPlans.ts"
   },
   "keywords": [],
   "author": "",

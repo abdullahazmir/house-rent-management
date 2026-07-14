@@ -71,4 +71,16 @@ async function createIndexes(database: Db): Promise<void> {
     { key: { ownerId: 1, createdAt: -1 }, name: 'by_owner' },
     { key: { ownerId: 1, email: 1 }, unique: true, name: 'uniq_owner_email' },
   ]);
+
+  await database.collection('plans').createIndexes([{ key: { sortOrder: 1 }, name: 'by_sort_order' }]);
+
+  await database
+    .collection('webhookEvents')
+    .createIndexes([{ key: { stripeEventId: 1 }, unique: true, name: 'uniq_stripe_event' }]);
+
+  await database.collection('payments').createIndexes([
+    { key: { ownerId: 1, leaseId: 1, dueDate: 1 }, name: 'by_owner_lease_due' },
+    { key: { ownerId: 1, status: 1 }, name: 'by_owner_status' },
+    { key: { tenantIds: 1 }, name: 'by_tenant' },
+  ]);
 }

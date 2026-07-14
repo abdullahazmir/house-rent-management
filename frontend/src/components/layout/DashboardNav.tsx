@@ -9,6 +9,8 @@ const NAV_ITEMS = [
   { href: '/dashboard/properties', label: 'Properties' },
   { href: '/dashboard/leases', label: 'Leases' },
   { href: '/dashboard/tenants', label: 'Tenants' },
+  { href: '/dashboard/payments', label: 'Payments' },
+  { href: '/dashboard/billing', label: 'Billing' },
 ];
 
 export function DashboardNav() {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, use } from 'react';
+import { useCallback, useEffect, useState, use } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -33,18 +33,19 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
     formState: { errors, isSubmitting },
   } = useForm<z.input<typeof unitFormSchema>, unknown, UnitFormValues>({ resolver: zodResolver(unitFormSchema) });
 
-  const load = async () => {
+  const load = useCallback(async () => {
     const [propertyRes, unitsRes] = await Promise.all([
       api.get<Property>(`/properties/${id}`),
       api.get<Unit[]>(`/properties/${id}/units`),
     ]);
     setProperty(propertyRes.data);
     setUnits(unitsRes.data);
-  };
+  }, [id]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional fetch-on-mount, reused after mutations below
     void load();
-  }, [id]);
+  }, [load]);
 
   const onSubmit = async (values: UnitFormValues) => {
     setError(null);

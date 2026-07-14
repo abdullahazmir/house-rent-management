@@ -8,6 +8,7 @@ import {
 } from '../db/collections';
 import { parseObjectId } from '../utils/objectId';
 import { NotFoundError, ValidationError } from '../utils/errors';
+import { generatePaymentsForLease } from '../services/payment.service';
 import type { CreateLeaseInput, UpdateLeaseInput } from '../validators/lease.validators';
 
 export async function listLeases(req: Request, res: Response): Promise<void> {
@@ -62,6 +63,8 @@ export async function createLease(req: Request<unknown, unknown, CreateLeaseInpu
     { _id: { $in: tenantIds } },
     { $set: { currentLeaseId: result.insertedId, updatedAt: now } },
   );
+
+  await generatePaymentsForLease({ _id: result.insertedId, ...doc });
 
   res.status(201).json({ _id: result.insertedId, ...doc });
 }

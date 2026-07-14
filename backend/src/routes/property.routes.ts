@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { authenticate } from '../middleware/authenticate';
 import { requireRole } from '../middleware/requireRole';
 import { scopeToOwner } from '../middleware/scopeToOwner';
+import { requireActiveSubscription } from '../middleware/requireActiveSubscription';
+import { enforcePlanLimits } from '../middleware/enforcePlanLimits';
 import { validate } from '../middleware/validate';
 import { createPropertySchema, updatePropertySchema, propertyIdParamSchema } from '../validators/property.validators';
 import {
@@ -18,7 +20,13 @@ const router = Router();
 router.use(authenticate, requireRole('owner', 'staff'), scopeToOwner);
 
 router.get('/', listProperties);
-router.post('/', validate(createPropertySchema), createProperty);
+router.post(
+  '/',
+  requireActiveSubscription,
+  enforcePlanLimits('properties'),
+  validate(createPropertySchema),
+  createProperty,
+);
 router.get('/:id', validate(propertyIdParamSchema), getProperty);
 router.patch('/:id', validate(updatePropertySchema), updateProperty);
 router.delete('/:id', validate(propertyIdParamSchema), deleteProperty);

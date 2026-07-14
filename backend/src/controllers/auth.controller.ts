@@ -5,6 +5,7 @@ import { hashPassword, comparePassword } from '../utils/password';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../utils/jwt';
 import { ConflictError, UnauthorizedError, NotFoundError } from '../utils/errors';
 import { hashInviteToken } from '../utils/inviteToken';
+import { stripe } from '../services/stripe.service';
 import type { RegisterInput, LoginInput } from '../validators/auth.validators';
 import type { AcceptInviteInput } from '../validators/tenant.validators';
 import { env } from '../config/env';
@@ -54,6 +55,12 @@ export async function register(req: Request<unknown, unknown, RegisterInput>, re
 
   const trialEndsAt = new Date(now.getTime() + env.DEFAULT_TRIAL_DAYS * 24 * 60 * 60 * 1000);
 
+  const stripeCustomer = await stripe.customers.create({
+    email: normalizedEmail,
+    name: companyName,
+    metadata: { ownerId: ownerId.toHexString() },
+  });
+
   await owners.insertOne({
     _id: ownerId,
     companyName,
@@ -61,7 +68,7 @@ export async function register(req: Request<unknown, unknown, RegisterInput>, re
     contactEmail: normalizedEmail,
     contactPhone: null,
     userId,
-    stripeCustomerId: null,
+    stripeCustomerId: stripeCustomer.id,
     stripeConnectAccountId: null,
     stripeConnectOnboardingComplete: false,
     stripeConnectChargesEnabled: false,

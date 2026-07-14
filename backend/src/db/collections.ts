@@ -6,6 +6,9 @@ import type { PropertyDoc } from '../models/Property';
 import type { UnitDoc } from '../models/Unit';
 import type { LeaseDoc } from '../models/Lease';
 import type { TenantDoc } from '../models/Tenant';
+import type { PlanDoc } from '../models/Plan';
+import type { WebhookEventDoc } from '../models/WebhookEvent';
+import type { PaymentDoc } from '../models/Payment';
 
 export function getUsersCollection(): Collection<UserDoc> {
   return getDb().collection<UserDoc>('users');
@@ -29,4 +32,16 @@ export function getLeasesCollection(): Collection<LeaseDoc> {
 
 export function getTenantsCollection(): Collection<TenantDoc> {
   return getDb().collection<TenantDoc>('tenants');
+}
+
+export function getPlansCollection(): Collection<PlanDoc> {
+  return getDb().collection<PlanDoc>('plans');
+}
+
+export function getWebhookEventsCollection(): Collection<WebhookEventDoc> {
+  return getDb().collection<WebhookEventDoc>('webhookEvents');
+}
+
+export function getPaymentsCollection(): Collection<PaymentDoc> {
+  return getDb().collection<PaymentDoc>('payments');
 }
