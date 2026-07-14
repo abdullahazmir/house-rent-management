@@ -2,6 +2,8 @@ import type { Request, Response } from 'express';
 import { getPaymentsCollection } from '../db/collections';
 import { parseObjectId } from '../utils/objectId';
 import { NotFoundError, ValidationError } from '../utils/errors';
+import { notifyTenantsPaymentReceipt } from '../services/payment.service';
+import { recordAuditLog } from '../utils/auditLog';
 import type { RecordManualPaymentInput } from '../validators/payment.validators';
 
 export async function listPayments(req: Request, res: Response): Promise<void> {
@@ -55,6 +57,16 @@ export async function recordManualPayment(
     },
     { returnDocument: 'after' },
   );
+
+  if (result?.status === 'paid') {
+    await notifyTenantsPaymentReceipt(result);
+  }
+
+  await recordAuditLog(parseObjectId(req.user!.id), 'payment.manual_record', ownerId, {
+    paymentId: _id.toHexString(),
+    amountPaid: req.body.amountPaid,
+    method: req.body.method,
+  });
 
   res.status(200).json(result);
 }

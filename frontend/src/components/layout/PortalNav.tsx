@@ -7,6 +7,7 @@ import { useAuth } from '../../lib/auth-context';
 const NAV_ITEMS = [
   { href: '/portal', label: 'My Lease' },
   { href: '/portal/payments', label: 'Payments' },
+  { href: '/portal/maintenance', label: 'Maintenance' },
 ];
 
 export function PortalNav() {

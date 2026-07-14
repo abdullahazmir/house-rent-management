@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import rateLimit from 'express-rate-limit';
 import { env } from './config/env';
 import apiRouter from './routes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
@@ -29,7 +30,14 @@ app.get('/health', (_req: Request, res: Response) => {
   res.status(200).json({ status: 'ok' });
 });
 
-app.use('/api/v1', apiRouter);
+const apiRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 600,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use('/api/v1', apiRateLimit, apiRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

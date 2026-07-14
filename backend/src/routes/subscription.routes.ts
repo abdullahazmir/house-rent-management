@@ -8,10 +8,11 @@ import { getSubscription, createCheckoutSession, createPortalSession } from '../
 
 const router = Router();
 
-router.use(authenticate, requireRole('owner', 'staff'), scopeToOwner);
+router.use(authenticate, scopeToOwner);
 
-router.get('/', getSubscription);
-router.post('/checkout-session', validate(createCheckoutSessionSchema), createCheckoutSession);
-router.post('/portal-session', createPortalSession);
+// Staff can view subscription status but never mutate billing.
+router.get('/', requireRole('owner', 'staff'), getSubscription);
+router.post('/checkout-session', requireRole('owner'), validate(createCheckoutSessionSchema), createCheckoutSession);
+router.post('/portal-session', requireRole('owner'), createPortalSession);
 
 export default router;

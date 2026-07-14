@@ -3,6 +3,7 @@ import { getTenantsCollection } from '../db/collections';
 import { parseObjectId } from '../utils/objectId';
 import { NotFoundError, ConflictError } from '../utils/errors';
 import { generateInviteToken } from '../utils/inviteToken';
+import { sendTenantInviteEmail } from '../services/email.service';
 import { env } from '../config/env';
 import type { InviteTenantInput, UpdateTenantInput } from '../validators/tenant.validators';
 
@@ -42,8 +43,7 @@ export async function inviteTenant(req: Request<unknown, unknown, InviteTenantIn
   const result = await getTenantsCollection().insertOne(doc);
 
   const inviteLink = `${env.CLIENT_APP_URL}/accept-invite?token=${token}`;
-  // No email provider wired yet (Phase 5) — log the invite link so it can be shared manually.
-  console.log(`[tenant invite] ${email}: ${inviteLink}`);
+  await sendTenantInviteEmail(email, inviteLink);
 
   res.status(201).json({ _id: result.insertedId, ...doc, inviteLink });
 }

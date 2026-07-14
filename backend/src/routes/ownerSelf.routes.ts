@@ -6,11 +6,12 @@ import { getMe, getConnectStatus, startConnectOnboarding, getConnectDashboardLin
 
 const router = Router();
 
-router.use(authenticate, requireRole('owner', 'staff'), scopeToOwner);
+router.use(authenticate, scopeToOwner);
 
-router.get('/', getMe);
-router.get('/connect/status', getConnectStatus);
-router.post('/connect/onboard', startConnectOnboarding);
-router.post('/connect/dashboard-link', getConnectDashboardLink);
+router.get('/', requireRole('owner', 'staff'), getMe);
+router.get('/connect/status', requireRole('owner', 'staff'), getConnectStatus);
+// Connect payout setup touches banking details — owner only, not staff.
+router.post('/connect/onboard', requireRole('owner'), startConnectOnboarding);
+router.post('/connect/dashboard-link', requireRole('owner'), getConnectDashboardLink);
 
 export default router;

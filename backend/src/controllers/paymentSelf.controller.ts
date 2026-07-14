@@ -3,6 +3,7 @@ import { getPaymentsCollection, getTenantsCollection, getOwnersCollection } from
 import { parseObjectId } from '../utils/objectId';
 import { NotFoundError, ValidationError } from '../utils/errors';
 import { stripe } from '../services/stripe.service';
+import { notifyTenantsPaymentReceipt } from '../services/payment.service';
 import { env } from '../config/env';
 import type { CreateSelfCheckoutSessionInput } from '../validators/payment.validators';
 
@@ -70,6 +71,10 @@ export async function simulateMyPayment(req: Request, res: Response): Promise<vo
     },
     { returnDocument: 'after' },
   );
+
+  if (result) {
+    await notifyTenantsPaymentReceipt(result);
+  }
 
   res.status(200).json(result);
 }

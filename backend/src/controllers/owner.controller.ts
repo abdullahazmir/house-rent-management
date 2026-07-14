@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 import { getOwnersCollection } from '../db/collections';
 import { parseObjectId } from '../utils/objectId';
 import { NotFoundError } from '../utils/errors';
+import { recordAuditLog } from '../utils/auditLog';
 
 export async function listOwners(_req: Request, res: Response): Promise<void> {
   const owners = await getOwnersCollection().find({}).sort({ createdAt: -1 }).toArray();
@@ -23,6 +24,7 @@ export async function suspendOwner(req: Request, res: Response): Promise<void> {
     { returnDocument: 'after' },
   );
   if (!owner) throw new NotFoundError('Owner not found');
+  await recordAuditLog(parseObjectId(req.user!.id), 'owner.suspend', _id, {});
   res.status(200).json(owner);
 }
 
@@ -34,5 +36,6 @@ export async function activateOwner(req: Request, res: Response): Promise<void> 
     { returnDocument: 'after' },
   );
   if (!owner) throw new NotFoundError('Owner not found');
+  await recordAuditLog(parseObjectId(req.user!.id), 'owner.activate', _id, {});
   res.status(200).json(owner);
 }

@@ -9,6 +9,7 @@ import {
   getPlansCollection,
   getPaymentsCollection,
 } from '../db/collections';
+import { notifyTenantsPaymentReceipt } from '../services/payment.service';
 import type { SubscriptionStatus } from '../models/Owner';
 
 export async function handleStripeWebhook(req: Request, res: Response): Promise<void> {
@@ -130,7 +131,7 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
   const chargeId = typeof latestCharge === 'string' ? latestCharge : (latestCharge?.id ?? null);
   const receiptUrl = typeof latestCharge === 'string' ? null : (latestCharge?.receipt_url ?? null);
 
-  await payments.updateOne(
+  const result = await payments.findOneAndUpdate(
     { _id: payment._id },
     {
       $set: {
@@ -144,7 +145,12 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
         updatedAt: new Date(),
       },
     },
+    { returnDocument: 'after' },
   );
+
+  if (result) {
+    await notifyTenantsPaymentReceipt(result);
+  }
 }
 
 async function handlePaymentIntentFailed(paymentIntent: Stripe.PaymentIntent): Promise<void> {

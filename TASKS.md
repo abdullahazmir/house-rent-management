@@ -152,4 +152,4 @@ Copy this checklist and check items off as you complete and validate them:
 - [x] Phase 2 (P2.1–P2.9)
 - [x] Phase 3 (P3.1–P3.9) — code-complete and typechecked; live Stripe Connect account creation still blocked pending Connect signup propagation on the Stripe side (verify once unblocked)
 - [x] Phase 4 (P4.1–P4.4)
-- [ ] Phase 5 (P5.1–P5.5, optional/parallel tracks)
+- [x] Phase 5 (P5.1–P5.5) — P5.1 wired with a console-log email transport (no real provider key yet, swap `email.service.ts`'s `sendEmail` for one); P5.5 covers audit logging + rate limiting, SMS/PDF generation skipped (need paid external providers)

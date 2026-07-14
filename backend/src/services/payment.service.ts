@@ -1,6 +1,8 @@
 import { ObjectId } from 'mongodb';
-import { getPaymentsCollection } from '../db/collections';
+import { getPaymentsCollection, getTenantsCollection } from '../db/collections';
+import { sendPaymentReceiptEmail } from './email.service';
 import type { LeaseDoc } from '../models/Lease';
+import type { PaymentDoc } from '../models/Payment';
 
 const MONTHS_TO_GENERATE = 12;
 
@@ -57,4 +59,12 @@ export async function generatePaymentsForLease(lease: LeaseDoc & { _id: ObjectId
   if (docs.length > 0) {
     await payments.insertMany(docs);
   }
+}
+
+export async function notifyTenantsPaymentReceipt(payment: PaymentDoc): Promise<void> {
+  const tenants = await getTenantsCollection()
+    .find({ _id: { $in: payment.tenantIds } })
+    .toArray();
+
+  await Promise.all(tenants.map((tenant) => sendPaymentReceiptEmail(tenant.email, payment.amountPaid, payment.dueDate)));
 }

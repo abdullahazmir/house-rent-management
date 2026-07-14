@@ -9,6 +9,8 @@ import type { TenantDoc } from '../models/Tenant';
 import type { PlanDoc } from '../models/Plan';
 import type { WebhookEventDoc } from '../models/WebhookEvent';
 import type { PaymentDoc } from '../models/Payment';
+import type { MaintenanceRequestDoc } from '../models/MaintenanceRequest';
+import type { AuditLogDoc } from '../models/AuditLog';
 
 export function getUsersCollection(): Collection<UserDoc> {
   return getDb().collection<UserDoc>('users');
@@ -44,4 +46,12 @@ export function getWebhookEventsCollection(): Collection<WebhookEventDoc> {
 
 export function getPaymentsCollection(): Collection<PaymentDoc> {
   return getDb().collection<PaymentDoc>('payments');
+}
+
+export function getMaintenanceRequestsCollection(): Collection<MaintenanceRequestDoc> {
+  return getDb().collection<MaintenanceRequestDoc>('maintenanceRequests');
+}
+
+export function getAuditLogsCollection(): Collection<AuditLogDoc> {
+  return getDb().collection<AuditLogDoc>('auditLogs');
 }

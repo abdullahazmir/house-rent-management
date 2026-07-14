@@ -1,9 +1,15 @@
 import type { NextFunction, Request, Response } from 'express';
-import { getOwnersCollection, getPlansCollection, getPropertiesCollection, getUnitsCollection } from '../db/collections';
+import {
+  getOwnersCollection,
+  getPlansCollection,
+  getPropertiesCollection,
+  getUnitsCollection,
+  getUsersCollection,
+} from '../db/collections';
 import { parseObjectId } from '../utils/objectId';
 import { NotFoundError, PlanLimitError } from '../utils/errors';
 
-type LimitResource = 'properties' | 'units';
+type LimitResource = 'properties' | 'units' | 'staff';
 
 export function enforcePlanLimits(resource: LimitResource) {
   return async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
@@ -31,10 +37,15 @@ export function enforcePlanLimits(resource: LimitResource) {
             `Your plan allows up to ${plan.limits.maxProperties} properties. Upgrade to add more.`,
           );
         }
-      } else {
+      } else if (resource === 'units') {
         const count = await getUnitsCollection().countDocuments({ ownerId });
         if (count >= plan.limits.maxUnits) {
           throw new PlanLimitError(`Your plan allows up to ${plan.limits.maxUnits} units. Upgrade to add more.`);
+        }
+      } else {
+        const count = await getUsersCollection().countDocuments({ ownerId, role: 'staff' });
+        if (count >= plan.limits.maxStaff) {
+          throw new PlanLimitError(`Your plan allows up to ${plan.limits.maxStaff} staff accounts. Upgrade to add more.`);
         }
       }
 

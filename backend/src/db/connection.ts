@@ -83,4 +83,13 @@ async function createIndexes(database: Db): Promise<void> {
     { key: { ownerId: 1, status: 1 }, name: 'by_owner_status' },
     { key: { tenantIds: 1 }, name: 'by_tenant' },
   ]);
+
+  await database.collection('maintenanceRequests').createIndexes([
+    { key: { ownerId: 1, status: 1, createdAt: -1 }, name: 'by_owner_status' },
+    { key: { tenantId: 1, createdAt: -1 }, name: 'by_tenant' },
+  ]);
+
+  await database
+    .collection('auditLogs')
+    .createIndexes([{ key: { ownerId: 1, createdAt: -1 }, name: 'by_owner' }]);
 }
