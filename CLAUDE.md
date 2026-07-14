@@ -11,6 +11,15 @@ All phases (0–5) of `plan.md` / `TASKS.md` are built and validated end-to-end.
 - Transactional email (`src/services/email.service.ts`) uses a console-log transport — no real provider (SendGrid/Postmark/etc.) is wired up. Swap the body of `sendEmail()` for a real provider call when a key is available; every call site (invites, receipts, reminders, maintenance updates) is already wired.
 - SMS reminders and PDF generation (receipts/leases) were skipped — both need paid external providers not yet chosen.
 
+## Deployment
+
+- **Frontend**: Vercel, project `abdullahazmirs-projects/frontend`. Production URL: `https://frontend-gamma-ashen-33.vercel.app`. Deploy with `cd frontend && vercel deploy --prod --yes` (Vercel CLI already linked via `.vercel/project.json`, gitignored). `NEXT_PUBLIC_API_URL` is set as a Vercel project env var (Production) pointing at the Render backend.
+- **Backend**: Render, service `house-rent-management-backend` (`srv-d9auqe6rnols73ddfea0`), free plan, root dir `backend/`, auto-deploys on push to `main`. Production URL: `https://house-rent-management-backend-9j0r.onrender.com`. Build command is `npm install --include=dev && npm run build` — the `--include=dev` is required because Render skips `devDependencies` (where `typescript` and all `@types/*` packages live) when `NODE_ENV=production` is set, which breaks the `tsc` build otherwise. Managed via the Render API (`RENDER_API_KEY` in `backend/.env`, gitignored) rather than the dashboard.
+- **Stripe webhook**: a second webhook endpoint (`we_1Tt1QdLE9VFZsXenT4Duf1bJ`) exists in the Stripe dashboard pointing at the Render URL, separate from the local one used with `stripe listen`. Its signing secret is set as `STRIPE_WEBHOOK_SECRET` on Render only, not in local `.env`.
+- **Cross-domain cookies**: frontend and backend are on different domains in production, so the refresh-token cookie is `SameSite=None; Secure` when `NODE_ENV=production` (and `SameSite=Lax` for local dev where both run on `localhost`) — see `setRefreshCookie` in `auth.controller.ts`. Don't revert this without re-testing session persistence across a page reload in production.
+- **Production MongoDB**: reuses the same Atlas database as local dev (`house_rent_dev`) — there's no separate prod database, so the seeded demo data (`demo@houserentmanagement.com`) is visible on the live deployment.
+- **Free-tier caveat**: Render's free web services spin down after inactivity and take ~30-60s to wake on the next request — expect a slow first request after idle periods.
+
 ## Commands
 
 Run from the repo root (`concurrently` runs both dev servers):
