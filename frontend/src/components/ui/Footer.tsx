@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { Home } from "lucide-react";
 import type { SVGProps } from "react";
 
 interface FooterLink {
@@ -65,9 +65,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 sm:col-span-1">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#BC6C50]">
-                <Home className="h-4 w-4 text-white" strokeWidth={2.5} />
-              </div>
+              <Image src="/logo.png" alt="House Rent Management" width={32} height={32} className="rounded-md object-cover" />
               <span className="text-base font-semibold text-white">
                 House Rent
               </span>
