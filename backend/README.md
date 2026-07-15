@@ -38,6 +38,24 @@ curl http://localhost:4000/health
 
 The `/login` page's "Demo login" button signs in as the demo owner automatically. Log in as the demo admin manually at `/login`, then visit `/admin`.
 
+## Deploying (Render)
+
+`CLIENT_APP_URL` (used for both CORS and Stripe redirect URLs) is read once into `env` at
+process boot (`src/config/env.ts`) — **changing it in the Render dashboard's Environment tab
+does not take effect until the service actually restarts.** Saving the env var alone doesn't
+always trigger a restart depending on plan/settings; after changing it, explicitly use
+**Manual Deploy → Deploy latest commit** (or **Restart Service**) and wait for the deploy to
+show **Live** before assuming it's applied. Verify with:
+
+```bash
+curl -i -H "Origin: https://<your-frontend-domain>" https://<your-backend>.onrender.com/api/v1/public/units
+# look for: access-control-allow-origin: https://<your-frontend-domain>
+```
+
+If that header still shows a stale origin after a deploy, the deploy likely hasn't actually
+restarted the process yet, or `CLIENT_APP_URL` doesn't exactly match the frontend's origin
+(no trailing slash, no path).
+
 ## Project layout
 
 ```
