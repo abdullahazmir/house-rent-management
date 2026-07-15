@@ -99,6 +99,8 @@ export default function AdminHomePage() {
                         innerRadius={50}
                         outerRadius={80}
                         paddingAngle={2}
+                        startAngle={90}
+                        endAngle={-270}
                       >
                         {stats.subscriptionStatusBreakdown.map((entry, index) => (
                           <Cell key={entry.status} fill={colorForIndex(index)} stroke="#fff" strokeWidth={2} />

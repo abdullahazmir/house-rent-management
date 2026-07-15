@@ -91,6 +91,8 @@ export default function DashboardHomePage() {
                     innerRadius={50}
                     outerRadius={80}
                     paddingAngle={2}
+                    startAngle={90}
+                    endAngle={-270}
                   >
                     {stats.occupancyBreakdown.map((entry, index) => (
                       <Cell key={entry.status} fill={colorForIndex(index)} stroke="#fff" strokeWidth={2} />

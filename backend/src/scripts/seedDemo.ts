@@ -170,7 +170,7 @@ const PROPERTY_SEEDS: PropertySeed[] = [
     type: 'multi_family',
     units: [
       {
-        unitNumber: 'Unit A',
+        unitNumber: 'A',
         bedrooms: 3,
         bathrooms: 2,
         squareFeet: 1400,
