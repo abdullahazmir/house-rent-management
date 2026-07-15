@@ -35,7 +35,7 @@ export async function createUnit(req: Request<{ propertyId: string }, unknown, C
     status: req.body.status,
     imageUrl: req.body.imageUrl ?? null,
     marketingDescription: req.body.marketingDescription ?? null,
-    isPubliclyListed: req.body.isPubliclyListed,
+    isPubliclyListed: req.body.isPubliclyListed ?? false,
     createdAt: now,
     updatedAt: now,
   };

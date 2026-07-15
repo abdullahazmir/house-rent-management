@@ -32,6 +32,8 @@ export async function createStaff(req: Request<unknown, unknown, CreateStaffInpu
     passwordHash,
     role: 'staff' as const,
     ownerId,
+    firstName: null,
+    lastName: null,
     isActive: true,
     lastLoginAt: null,
     createdAt: now,

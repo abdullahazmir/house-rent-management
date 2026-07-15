@@ -14,10 +14,12 @@ import maintenanceRoutes from './maintenance.routes';
 import maintenanceSelfRoutes from './maintenanceSelf.routes';
 import staffRoutes from './staff.routes';
 import analyticsRoutes from './analytics.routes';
+import publicListingRoutes from './publicListing.routes';
 
 const router = Router();
 
 router.use('/auth', authRoutes);
+router.use('/public/units', publicListingRoutes);
 router.use('/properties', propertyRoutes);
 router.use('/leases', leaseRoutes);
 // Mounted before the owner/staff /tenants/:id routes so /tenants/me isn't captured as an :id param.

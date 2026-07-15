@@ -41,6 +41,8 @@ async function main(): Promise<void> {
     passwordHash,
     role: 'super_admin',
     ownerId: null,
+    firstName: null,
+    lastName: null,
     isActive: true,
     lastLoginAt: null,
     createdAt: now,

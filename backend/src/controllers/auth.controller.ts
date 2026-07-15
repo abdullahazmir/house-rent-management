@@ -12,7 +12,7 @@ import { env } from '../config/env';
 
 const REFRESH_COOKIE = 'refreshToken';
 
-function setRefreshCookie(res: Response, token: string): void {
+export function setRefreshCookie(res: Response, token: string): void {
   const isProduction = env.NODE_ENV === 'production';
   res.cookie(REFRESH_COOKIE, token, {
     httpOnly: true,
@@ -27,16 +27,30 @@ function setRefreshCookie(res: Response, token: string): void {
 }
 
 export async function register(req: Request<unknown, unknown, RegisterInput>, res: Response): Promise<void> {
-  const { companyName, contactName, email, password } = req.body;
-  const normalizedEmail = email.toLowerCase();
-
+  const normalizedEmail = req.body.email.toLowerCase();
   const users = getUsersCollection();
-  const owners = getOwnersCollection();
 
   const existing = await users.findOne({ email: normalizedEmail });
   if (existing) {
     throw new ConflictError('An account with this email already exists');
   }
+
+  if (req.body.role === 'renter') {
+    await registerRenter(req.body, normalizedEmail, res);
+    return;
+  }
+
+  await registerOwner(req.body, normalizedEmail, res);
+}
+
+async function registerOwner(
+  body: Extract<RegisterInput, { role: 'owner' }>,
+  normalizedEmail: string,
+  res: Response,
+): Promise<void> {
+  const { companyName, contactName, password } = body;
+  const users = getUsersCollection();
+  const owners = getOwnersCollection();
 
   const passwordHash = await hashPassword(password);
   const now = new Date();
@@ -50,6 +64,8 @@ export async function register(req: Request<unknown, unknown, RegisterInput>, re
     passwordHash,
     role: 'owner',
     ownerId,
+    firstName: null,
+    lastName: null,
     isActive: true,
     lastLoginAt: null,
     createdAt: now,
@@ -96,6 +112,47 @@ export async function register(req: Request<unknown, unknown, RegisterInput>, re
   res.status(201).json({
     accessToken,
     user: { id: userId.toHexString(), email: normalizedEmail, role: 'owner', ownerId: ownerId.toHexString() },
+  });
+}
+
+/**
+ * Self-service renter signup: creates only a User (no Owner/Tenant/Stripe customer yet —
+ * ownerId stays null until this renter completes a self-service rental via
+ * POST /public/units/:id/rent, which is what actually creates their Tenant+Lease).
+ */
+async function registerRenter(
+  body: Extract<RegisterInput, { role: 'renter' }>,
+  normalizedEmail: string,
+  res: Response,
+): Promise<void> {
+  const { firstName, lastName, password } = body;
+  const users = getUsersCollection();
+
+  const passwordHash = await hashPassword(password);
+  const now = new Date();
+  const userId = new ObjectId();
+
+  await users.insertOne({
+    _id: userId,
+    email: normalizedEmail,
+    passwordHash,
+    role: 'renter',
+    ownerId: null,
+    firstName,
+    lastName,
+    isActive: true,
+    lastLoginAt: null,
+    createdAt: now,
+    updatedAt: now,
+  });
+
+  const accessToken = signAccessToken({ sub: userId.toHexString(), role: 'renter', ownerId: null });
+  const refreshToken = signRefreshToken({ sub: userId.toHexString() });
+
+  setRefreshCookie(res, refreshToken);
+  res.status(201).json({
+    accessToken,
+    user: { id: userId.toHexString(), email: normalizedEmail, role: 'renter', ownerId: null },
   });
 }
 
@@ -189,6 +246,8 @@ export async function acceptInvite(
     passwordHash,
     role: 'renter',
     ownerId: tenant.ownerId,
+    firstName: tenant.firstName,
+    lastName: tenant.lastName,
     isActive: true,
     lastLoginAt: now,
     createdAt: now,
