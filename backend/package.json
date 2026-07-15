@@ -10,7 +10,8 @@
     "start": "node dist/server.js",
     "lint": "eslint .",
     "seed:admin": "tsx src/scripts/seedSuperAdmin.ts",
-    "seed:plans": "tsx src/scripts/seedPlans.ts"
+    "seed:plans": "tsx src/scripts/seedPlans.ts",
+    "seed:demo": "tsx src/scripts/seedDemo.ts"
   },
   "keywords": [],
   "author": "",
