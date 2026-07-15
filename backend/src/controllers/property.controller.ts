@@ -29,6 +29,7 @@ export async function createProperty(
     type: req.body.type,
     yearBuilt: req.body.yearBuilt ?? null,
     notes: req.body.notes ?? null,
+    imageUrl: null,
     createdAt: now,
     updatedAt: now,
   };

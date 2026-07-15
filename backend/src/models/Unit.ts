@@ -12,6 +12,10 @@ export interface UnitDoc {
   squareFeet: number | null;
   marketRent: number;
   status: UnitStatus;
+  imageUrl: string | null;
+  marketingDescription: string | null;
+  /** Owner opt-in to show this unit on the public `/listings` catalog while vacant. */
+  isPubliclyListed: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

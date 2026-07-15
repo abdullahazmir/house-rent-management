@@ -33,6 +33,9 @@ export async function createUnit(req: Request<{ propertyId: string }, unknown, C
     squareFeet: req.body.squareFeet ?? null,
     marketRent: req.body.marketRent,
     status: req.body.status,
+    imageUrl: null,
+    marketingDescription: null,
+    isPubliclyListed: false,
     createdAt: now,
     updatedAt: now,
   };

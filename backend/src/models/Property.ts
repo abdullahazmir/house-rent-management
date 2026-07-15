@@ -15,6 +15,8 @@ export interface PropertyDoc {
   type: PropertyType;
   yearBuilt: number | null;
   notes: string | null;
+  /** Fallback card image for units under this property that don't set their own imageUrl. */
+  imageUrl: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
