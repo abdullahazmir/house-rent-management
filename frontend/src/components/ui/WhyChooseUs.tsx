@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardBody, Chip } from "@heroui/react";
+import { Card, CardContent, Chip } from "@heroui/react";
 import { Building2, ShieldCheck, Zap, PiggyBank, LucideIcon } from "lucide-react";
 
 interface Differentiator {
@@ -50,8 +50,8 @@ export default function WhyChooseUs() {
             Built for real estate owners, not spreadsheets
           </h2>
           <p className="mt-4 text-base text-[#DDAD9C]">
-            Most tools make you choose between "simple" and "actually
-            handles payments." We didn't think you should have to.
+            Most tools make you choose between &quot;simple&quot; and &quot;actually
+            handles payments.&quot; We didn&apos;t think you should have to.
           </p>
         </div>
 
@@ -59,14 +59,13 @@ export default function WhyChooseUs() {
           {differentiators.map(({ icon: Icon, title, description, highlight }) => (
             <Card
               key={title}
-              shadow="none"
               className={
                 highlight
                   ? "border border-[#AFE0E7]/50 bg-[#AFE0E7] transition-all duration-200 hover:-translate-y-1"
                   : "border border-white/10 bg-[#304C53] transition-all duration-200 hover:-translate-y-1 hover:border-white/25"
               }
             >
-              <CardBody className="gap-4 p-6">
+              <CardContent className="gap-4 p-6">
                 <div
                   className={
                     highlight
@@ -107,7 +106,7 @@ export default function WhyChooseUs() {
                 >
                   {description}
                 </p>
-              </CardBody>
+              </CardContent>
             </Card>
           ))}
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardBody } from "@heroui/react";
+import { Card, CardContent } from "@heroui/react";
 import { Wallet, Users, CreditCard, LayoutGrid, LucideIcon } from "lucide-react";
 
 interface Benefit {
@@ -49,7 +49,7 @@ export default function BenefitsSection() {
           </h2>
           <p className="mt-4 text-base text-[#5A2F25]/80">
             Everything you need to collect rent, manage leases, and get paid
-            on time — built for owners who'd rather run their properties than
+            on time — built for owners who&apos;d rather run their properties than
             their paperwork.
           </p>
         </div>
@@ -58,10 +58,9 @@ export default function BenefitsSection() {
           {benefits.map(({ icon: Icon, title, description }) => (
             <Card
               key={title}
-              shadow="none"
               className="border border-[#304C53]/10 bg-white transition-all duration-200 hover:-translate-y-1 hover:border-[#BC6C50]/40 hover:shadow-lg"
             >
-              <CardBody className="gap-4 p-6">
+              <CardContent className="gap-4 p-6">
                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#BC6C50]/10">
                   <Icon className="h-5 w-5 text-[#BC6C50]" strokeWidth={2} />
                 </div>
@@ -71,7 +70,7 @@ export default function BenefitsSection() {
                 <p className="text-sm leading-relaxed text-[#5A2F25]/75">
                   {description}
                 </p>
-              </CardBody>
+              </CardContent>
             </Card>
           ))}
         </div>
