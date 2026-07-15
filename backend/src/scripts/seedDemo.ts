@@ -391,6 +391,15 @@ const PROPERTY_SEEDS: PropertySeed[] = [
   },
 ];
 
+// Lorem Picsum's numeric /id/{n}/ lookup has gaps even within its nominal ~0-1084 range
+// (confirmed: several ids in that range 404 even after following redirects) — its /seed/{s}/
+// form instead generates a deterministic image from an arbitrary string and reliably
+// resolves for any seed (verified live), so it's used here instead of a numeric id.
+function picsumImageUrl(seed: string): string {
+  const slug = seed.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  return `https://picsum.photos/seed/${slug}/640/480`;
+}
+
 async function seedPropertiesAndUnits(ownerId: ObjectId): Promise<void> {
   const properties = getPropertiesCollection();
   const units = getUnitsCollection();
@@ -417,7 +426,7 @@ async function seedPropertiesAndUnits(ownerId: ObjectId): Promise<void> {
       type: seed.type,
       yearBuilt: null,
       notes: null,
-      imageUrl: null,
+      imageUrl: picsumImageUrl(seed.name),
       createdAt: now,
       updatedAt: now,
     });
@@ -432,7 +441,7 @@ async function seedPropertiesAndUnits(ownerId: ObjectId): Promise<void> {
         squareFeet: unit.squareFeet,
         marketRent: unit.marketRent,
         status: 'vacant',
-        imageUrl: null,
+        imageUrl: picsumImageUrl(`${seed.name}-${unit.unitNumber}`),
         marketingDescription: unit.marketingDescription,
         isPubliclyListed: true,
         createdAt: now,
@@ -444,12 +453,37 @@ async function seedPropertiesAndUnits(ownerId: ObjectId): Promise<void> {
   }
 }
 
+/** Backfills imageUrl on units/properties created before seedPropertiesAndUnits assigned one
+ *  (e.g. from an earlier run of this script) — idempotent, only touches imageUrl: null docs. */
+async function backfillMissingImages(ownerId: ObjectId): Promise<void> {
+  const properties = getPropertiesCollection();
+  const units = getUnitsCollection();
+
+  const staleProperties = await properties.find({ ownerId, imageUrl: null }).toArray();
+  for (const property of staleProperties) {
+    await properties.updateOne({ _id: property._id }, { $set: { imageUrl: picsumImageUrl(property.name) } });
+  }
+
+  const staleUnits = await units.find({ ownerId, imageUrl: null }).toArray();
+  for (const unit of staleUnits) {
+    await units.updateOne(
+      { _id: unit._id },
+      { $set: { imageUrl: picsumImageUrl(`${unit._id.toHexString()}-${unit.unitNumber}`) } },
+    );
+  }
+
+  if (staleProperties.length || staleUnits.length) {
+    console.log(`Backfilled images on ${staleProperties.length} propert(ies) and ${staleUnits.length} unit(s)`);
+  }
+}
+
 async function main(): Promise<void> {
   await connectDB();
 
   await ensureDemoAdmin();
   const ownerId = await ensureDemoOwner();
   await seedPropertiesAndUnits(ownerId);
+  await backfillMissingImages(ownerId);
 
   console.log('\nDemo credentials:');
   console.log(`  Owner — email: ${DEMO_OWNER_EMAIL}  password: ${DEMO_OWNER_PASSWORD}`);
