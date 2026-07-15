@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { Button } from '../components/ui/Button';
+import BenefitsSection from '@/components/ui/BenefitsSection';
+import WhyChooseUs from '@/components/ui/WhyChooseUs';
 
 export default function Home() {
   return (
@@ -21,6 +23,8 @@ export default function Home() {
           </Button>
         </Link>
       </div>
+      <BenefitsSection></BenefitsSection>
+      <WhyChooseUs></WhyChooseUs>
     </main>
   );
 }
