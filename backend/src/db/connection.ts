@@ -58,9 +58,11 @@ async function createIndexes(database: Db): Promise<void> {
 
   await database.collection('properties').createIndexes([{ key: { ownerId: 1, createdAt: -1 }, name: 'by_owner' }]);
 
-  await database
-    .collection('units')
-    .createIndexes([{ key: { ownerId: 1, propertyId: 1 }, name: 'by_owner_property' }]);
+  await database.collection('units').createIndexes([
+    { key: { ownerId: 1, propertyId: 1 }, name: 'by_owner_property' },
+    // Supports the public /listings catalog's unauthenticated, cross-tenant query.
+    { key: { isPubliclyListed: 1, status: 1 }, name: 'by_public_listing' },
+  ]);
 
   await database.collection('leases').createIndexes([
     { key: { ownerId: 1, unitId: 1 }, name: 'by_owner_unit' },
