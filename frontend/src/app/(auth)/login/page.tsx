@@ -18,10 +18,15 @@ const loginFormSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
+// Matches backend/src/scripts/seedDemo.ts — run `npm run seed:demo` in backend/ before using this.
+const DEMO_OWNER_EMAIL = 'demo.owner@houserent.dev';
+const DEMO_OWNER_PASSWORD = 'DemoOwner123!';
+
 export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [demoLoading, setDemoLoading] = useState(false);
 
   const {
     register,
@@ -36,6 +41,21 @@ export default function LoginPage() {
       router.push(ROLE_HOME[user.role]);
     } catch (err) {
       setServerError(getApiErrorMessage(err, 'Invalid email or password'));
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    setServerError(null);
+    setDemoLoading(true);
+    try {
+      const user = await login(DEMO_OWNER_EMAIL, DEMO_OWNER_PASSWORD);
+      router.push(ROLE_HOME[user.role]);
+    } catch (err) {
+      setServerError(
+        getApiErrorMessage(err, 'Demo account not found — run `npm run seed:demo` in backend/ first'),
+      );
+    } finally {
+      setDemoLoading(false);
     }
   };
 
@@ -56,6 +76,22 @@ export default function LoginPage() {
             {isSubmitting ? 'Logging in…' : 'Log in'}
           </Button>
         </form>
+
+        <div className="mt-4 flex items-center gap-3">
+          <div className="h-px flex-1 bg-muted" />
+          <span className="text-xs text-gray-500">or</span>
+          <div className="h-px flex-1 bg-muted" />
+        </div>
+        <Button
+          type="button"
+          variant="secondary"
+          className="mt-4 w-full"
+          onClick={handleDemoLogin}
+          disabled={demoLoading}
+        >
+          {demoLoading ? 'Logging in…' : 'Demo login (owner)'}
+        </Button>
+
         <div className="mt-4 flex flex-col gap-1 text-sm text-gray-600">
           <Link href="/forgot-password" className="underline hover:text-secondary">
             Forgot password?

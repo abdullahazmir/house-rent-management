@@ -25,6 +25,18 @@ curl http://localhost:4000/health
 - `npm run build` — type-check and compile to `dist/`
 - `npm start` — run the compiled output from `dist/`
 - `npm run lint` — run ESLint
+- `npm run seed:admin -- --email=admin@example.com --password=yourpassword` — creates a `super_admin` user
+- `npm run seed:plans` — creates the Stripe Products/Prices + `Plan` docs (Starter/Pro/Enterprise)
+- `npm run seed:demo` — creates a demo owner (with sample properties/publicly-listed units) and a demo `super_admin`, for the frontend's "Demo login" button and for manual admin testing. Idempotent — safe to re-run.
+
+### Demo credentials (after `npm run seed:demo`)
+
+| Role  | Email                       | Password         |
+|-------|------------------------------|------------------|
+| Owner | `demo.owner@houserent.dev`  | `DemoOwner123!`  |
+| Admin | `demo.admin@houserent.dev`  | `DemoAdmin123!`  |
+
+The `/login` page's "Demo login" button signs in as the demo owner automatically. Log in as the demo admin manually at `/login`, then visit `/admin`.
 
 ## Project layout
 
