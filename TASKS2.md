@@ -60,4 +60,4 @@ Companion to `TASKS.md`, breaking `plan2.md` into discrete, checkable tasks. Pha
 
 ## Progress Tracking
 
-- [ ] Phase 6 (P6.1–P6.22)
+- [x] Phase 6 (P6.1–P6.22)
