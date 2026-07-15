@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -25,8 +26,23 @@ const propertyFormSchema = z.object({
 type PropertyFormValues = z.infer<typeof propertyFormSchema>;
 
 export default function PropertiesPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+          <p className="text-sm text-gray-500">Loading…</p>
+        </main>
+      }
+    >
+      <PropertiesPageInner />
+    </Suspense>
+  );
+}
+
+function PropertiesPageInner() {
+  const searchParams = useSearchParams();
   const [properties, setProperties] = useState<Property[] | null>(null);
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(searchParams.get('new') === '1');
   const [error, setError] = useState<string | null>(null);
 
   const {

@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { api } from '../../lib/api';
+import { Button } from '../../components/ui/Button';
 import type { Property, Unit } from '../../types/models';
 
 interface MyLease {
@@ -19,7 +21,12 @@ export default function PortalHomePage() {
   const [lease, setLease] = useState<MyLease | null | undefined>(undefined);
 
   useEffect(() => {
-    void api.get<MyLease | null>('/tenants/me/lease').then((res) => setLease(res.data));
+    // A self-registered renter with no lease yet gets a 403 from scopeToOwner (ownerId is
+    // still null) rather than a 200 { null } — both cases mean "no active lease" here.
+    void api
+      .get<MyLease | null>('/tenants/me/lease')
+      .then((res) => setLease(res.data))
+      .catch(() => setLease(null));
   }, []);
 
   if (lease === undefined) {
@@ -33,7 +40,12 @@ export default function PortalHomePage() {
   if (!lease) {
     return (
       <main className="flex-1 p-4 sm:p-6 lg:p-8">
-        <p className="text-sm text-gray-500">You don&apos;t have an active lease yet.</p>
+        <div className="max-w-md rounded-md border border-muted p-6 text-center">
+          <p className="text-sm text-gray-500">You don&apos;t have an active lease yet.</p>
+          <Link href="/listings" className="mt-4 inline-block">
+            <Button>Browse available houses</Button>
+          </Link>
+        </div>
       </main>
     );
   }

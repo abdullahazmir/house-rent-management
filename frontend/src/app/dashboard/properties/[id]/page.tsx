@@ -15,6 +15,9 @@ const unitFormSchema = z.object({
   bedrooms: z.coerce.number().int().min(0),
   bathrooms: z.coerce.number().min(0),
   marketRent: z.coerce.number().positive('Rent must be greater than 0'),
+  imageUrl: z.union([z.literal(''), z.string().url('Enter a valid URL')]).optional(),
+  marketingDescription: z.string().max(2000).optional(),
+  isPubliclyListed: z.boolean().optional(),
 });
 
 type UnitFormValues = z.infer<typeof unitFormSchema>;
@@ -50,12 +53,22 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
   const onSubmit = async (values: UnitFormValues) => {
     setError(null);
     try {
-      await api.post(`/properties/${id}/units`, values);
+      await api.post(`/properties/${id}/units`, { ...values, imageUrl: values.imageUrl || undefined });
       reset();
       setShowForm(false);
       await load();
     } catch (err) {
       setError(getApiErrorMessage(err, 'Could not create unit'));
+    }
+  };
+
+  const togglePublicListing = async (unit: Unit) => {
+    setError(null);
+    try {
+      await api.patch(`/properties/${id}/units/${unit._id}`, { isPubliclyListed: !unit.isPubliclyListed });
+      await load();
+    } catch (err) {
+      setError(getApiErrorMessage(err, 'Could not update listing status'));
     }
   };
 
@@ -88,6 +101,25 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
           <Input label="Monthly rent ($)" type="number" step="0.01" {...register('marketRent')} error={errors.marketRent?.message} />
           <Input label="Bedrooms" type="number" {...register('bedrooms')} error={errors.bedrooms?.message} />
           <Input label="Bathrooms" type="number" step="0.5" {...register('bathrooms')} error={errors.bathrooms?.message} />
+          <Input
+            label="Image URL (optional)"
+            placeholder="https://…"
+            {...register('imageUrl')}
+            error={errors.imageUrl?.message}
+          />
+          <div className="flex flex-col gap-1 sm:col-span-2">
+            <label className="text-sm font-medium text-secondary">Marketing description (optional)</label>
+            <textarea
+              {...register('marketingDescription')}
+              rows={3}
+              className="rounded-md border border-secondary/30 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              placeholder="Shown on the public listing page"
+            />
+          </div>
+          <label className="flex items-center gap-2 text-sm text-secondary sm:col-span-2">
+            <input type="checkbox" {...register('isPubliclyListed')} className="h-4 w-4" />
+            List this unit publicly on /listings once it&apos;s vacant
+          </label>
           {error ? <p className="text-sm text-brown sm:col-span-2">{error}</p> : null}
           <div className="sm:col-span-2">
             <Button type="submit" disabled={isSubmitting}>
@@ -109,17 +141,27 @@ export default function PropertyDetailPage({ params }: { params: Promise<{ id: s
                   {unit.bedrooms} bed / {unit.bathrooms} bath — ${unit.marketRent}/mo
                 </p>
               </div>
-              <span
-                className={`self-start rounded-full px-2 py-1 text-xs font-medium sm:self-auto ${
-                  unit.status === 'vacant'
-                    ? 'bg-secondary/10 text-secondary'
-                    : unit.status === 'occupied'
-                      ? 'bg-highlight/40 text-secondary'
-                      : 'bg-muted text-brown'
-                }`}
-              >
-                {unit.status}
-              </span>
+              <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+                <span
+                  className={`rounded-full px-2 py-1 text-xs font-medium ${
+                    unit.status === 'vacant'
+                      ? 'bg-secondary/10 text-secondary'
+                      : unit.status === 'occupied'
+                        ? 'bg-highlight/40 text-secondary'
+                        : 'bg-muted text-brown'
+                  }`}
+                >
+                  {unit.status}
+                </span>
+                {unit.isPubliclyListed ? (
+                  <span className="rounded-full bg-highlight/50 px-2 py-1 text-xs font-medium text-secondary">
+                    Public listing
+                  </span>
+                ) : null}
+                <Button variant="secondary" onClick={() => togglePublicListing(unit)}>
+                  {unit.isPubliclyListed ? 'Unlist' : 'List publicly'}
+                </Button>
+              </div>
             </li>
           ))}
         </ul>

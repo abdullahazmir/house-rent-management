@@ -5,12 +5,9 @@ import { AxiosError } from 'axios';
 import { api, setAccessToken } from './api';
 import type { AuthUser } from '../types/auth';
 
-interface RegisterInput {
-  companyName: string;
-  contactName: string;
-  email: string;
-  password: string;
-}
+type RegisterInput =
+  | { role: 'owner'; companyName: string; contactName: string; email: string; password: string }
+  | { role: 'renter'; firstName: string; lastName: string; email: string; password: string };
 
 interface AuthContextValue {
   user: AuthUser | null;
@@ -19,6 +16,9 @@ interface AuthContextValue {
   register: (input: RegisterInput) => Promise<AuthUser>;
   acceptInvite: (token: string, password: string) => Promise<AuthUser>;
   logout: () => Promise<void>;
+  /** Applies a session returned by a non-auth endpoint (e.g. the self-service rent action),
+   *  which re-issues tokens the same way login/register do. */
+  applySession: (accessToken: string, user: AuthUser) => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -79,8 +79,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   }, []);
 
+  const applySession = useCallback((token: string, sessionUser: AuthUser): void => {
+    setAccessToken(token);
+    setUser(sessionUser);
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, register, acceptInvite, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, login, register, acceptInvite, logout, applySession }}>
       {children}
     </AuthContext.Provider>
   );

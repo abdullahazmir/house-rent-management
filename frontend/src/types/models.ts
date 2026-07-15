@@ -13,6 +13,7 @@ export interface Property {
   type: PropertyType;
   yearBuilt: number | null;
   notes: string | null;
+  imageUrl: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -29,6 +30,9 @@ export interface Unit {
   squareFeet: number | null;
   marketRent: number;
   status: UnitStatus;
+  imageUrl: string | null;
+  marketingDescription: string | null;
+  isPubliclyListed: boolean;
   createdAt: string;
   updatedAt: string;
 }
